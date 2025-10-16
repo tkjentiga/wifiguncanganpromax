@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Guncangan ProMax - Voucher WiFi Cepat</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        
+        /* Page transition classes */
+        .page-transition { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        .page-hidden { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; width: 100%; }
+        .page-visible { opacity: 1; transform: translateY(0); position: relative; }
+
+        /* Custom utility classes */
+        .form-input { @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition; }
+        .form-input-modal { @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition; }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- Container Utama -->
+    <div id="app-container" class="max-w-7xl mx-auto relative">
+
+        <!-- ===== HALAMAN LOGIN (Tersembunyi secara default) ===== -->
+        <div id="login-page" class="page-transition page-hidden min-h-screen flex items-center justify-center px-4 bg-gray-50">
+            <div class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-lg">
+                <div class="flex justify-center mb-6">
+                    <div class="flex items-center space-x-2">
+                         <svg class="h-10 w-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
+                        </svg>
+                        <span class="text-2xl font-bold text-gray-800">WiFi Guncangan ProMax</span>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-center text-gray-700 mb-2">Login Akun</h2>
+                <p class="text-center text-gray-500 mb-6">Login untuk memesan atau mengelola situs.</p>
+                <div id="login-error" class="hidden bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm"></div>
+                <form id="login-form">
+                    <div class="mb-4">
+                        <label for="username" class="block text-sm font-medium text-gray-600 mb-2">Username</label>
+                        <input type="text" id="username" class="form-input-modal" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium text-gray-600 mb-2">Password</label>
+                        <input type="password" id="password" class="form-input-modal" required>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">
+                        Login
+                    </button>
+                    <button type="button" id="back-to-promo-button" class="w-full mt-2 text-sm text-center text-gray-600 hover:text-indigo-600 py-2">Kembali ke halaman utama</button>
+                </form>
+                 <p class="text-xs text-center text-gray-400 mt-4">Demo: <br>Admin (user: admin, pass: admin123) <br> Client (user: client, pass: client123)</p>
+            </div>
+        </div>
+
+        <!-- ===== APLIKASI UTAMA / HALAMAN PROMOSI (Tampil secara default) ===== -->
+        <div id="main-app" class="page-transition page-visible">
+            
+            <!-- Mobile Header -->
+            <header class="md:hidden bg-white/80 backdrop-blur-lg sticky top-0 z-40 w-full border-b border-gray-200 flex items-center justify-between h-16 px-4">
+                <div class="flex items-center space-x-1.5">
+                    <svg class="h-7 w-7 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
+                    </svg>
+                    <span class="text-base font-bold text-gray-800">WiFi Guncangan ProMax</span>
+                </div>
+                <div id="mobile-header-auth-section">
+                    <!-- Tombol Login/Logout mobile dirender di sini oleh JS -->
+                </div>
+            </header>
+
+            <!-- Desktop Header -->
+            <header class="hidden md:flex bg-white/80 backdrop-blur-lg sticky top-0 z-40 w-full border-b border-gray-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center space-x-2">
+                            <svg class="h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
+                            </svg>
+                            <span class="text-2xl font-bold text-gray-800">WiFi Guncangan ProMax</span>
+                        </div>
+                        <nav class="hidden md:flex space-x-8">
+                             <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Home</a>
+                             <a href="#packages" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Paket</a>
+                             <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Kontak</a>
+                        </nav>
+                        <div id="header-auth-section" class="flex items-center space-x-4">
+                            <!-- Tombol Login/Logout desktop akan dirender oleh JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Konten Utama -->
+            <main class="pt-0 md:pt-0 pb-24 md:pb-0">
+                <!-- Hero Section -->
+                <section id="home" class="px-4 py-12 sm:py-16 md:py-24 text-center bg-white">
+                    <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">Koneksi Internet Cepat & Stabil</h1>
+                    <p id="hero-subtitle" class="max-w-2xl mx-auto text-base sm:text-lg text-gray-600 mb-8">Nikmati browsing, streaming, dan gaming tanpa batas dengan voucher WiFi kami. Aktifkan sekarang!</p>
+                    <a href="#packages" class="nav-link bg-indigo-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 inline-block">Lihat Paket</a>
+                </section>
+
+                <!-- Fitur Section -->
+                <section id="features" class="py-16 md:py-20 bg-gray-50">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold text-gray-900">Kenapa Memilih WiFi Guncangan ProMax?</h2>
+                            <p class="text-gray-600 mt-2">Kami menawarkan lebih dari sekedar koneksi internet.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
+                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
+                                    <i class="fas fa-rocket text-2xl text-indigo-600"></i>
+                                </div>
+                                <h3 id="feature-1-title" class="text-xl font-semibold mb-2">Super Cepat</h3>
+                                <p id="feature-1-desc" class="text-gray-600">Download, streaming, dan main game tanpa lag dengan kecepatan tinggi.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
+                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
+                                    <i class="fas fa-wallet text-2xl text-indigo-600"></i>
+                                </div>
+                                <h3 id="feature-2-title" class="text-xl font-semibold mb-2">Harga Terjangkau</h3>
+                                <p id="feature-2-desc" class="text-gray-600">Pilihan paket hemat yang sesuai dengan kebutuhan dan kantong Anda.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
+                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
+                                    <i class="fas fa-headset text-2xl text-indigo-600"></i>
+                                </div>
+                                <h3 id="feature-3-title" class="text-xl font-semibold mb-2">Dukungan 24/7</h3>
+                                <p id="feature-3-desc" class="text-gray-600">Tim kami siap membantu Anda kapan saja jika mengalami kendala.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Paket Voucher Section -->
+                <section id="packages" class="py-16 md:py-20">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold text-gray-900">Pilihan Paket Voucher</h2>
+                            <p class="text-gray-600 mt-2">Pilih paket yang paling sesuai untuk Anda.</p>
+                        </div>
+                        <div id="packages-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Paket dirender oleh JavaScript -->
+                        </div>
+                    </div>
+                </section>
+                
+                 <!-- Contact Section -->
+                <footer id="contact" class="bg-gray-800 text-white py-12">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <h3 class="text-2xl font-bold mb-2">Hubungi Kami</h3>
+                        <p id="contact-info" class="text-gray-400 mb-4">Punya pertanyaan? Jangan ragu untuk menghubungi kami.</p>
+                        <p class="font-semibold">Email: <a href="mailto:support@wifiguncanganpromax.com" id="contact-email" class="text-indigo-400 hover:underline">support@wifiguncanganpromax.com</a></p>
+                        <p class="font-semibold">WhatsApp: <a href="#" id="contact-whatsapp" class="text-indigo-400 hover:underline">+62 812-3456-7890</a></p>
+                         <div class="mt-6 text-sm text-gray-500">
+                            &copy; 2025 WiFi Guncangan ProMax. All Rights Reserved.
+                        </div>
+                    </div>
+                </footer>
+            </main>
+
+            <!-- Bottom Navbar (Mobile) -->
+            <nav id="bottom-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+                <div class="flex justify-around h-16 items-center">
+                    <a href="#home" class="nav-link flex flex-col items-center justify-center text-indigo-600 w-full transition">
+                        <i class="fas fa-home text-xl"></i>
+                        <span class="text-xs mt-1">Home</span>
+                    </a>
+                    <a href="#packages" class="nav-link flex flex-col items-center justify-center text-gray-500 hover:text-indigo-600 w-full transition">
+                        <i class="fas fa-wifi text-xl"></i>
+                        <span class="text-xs mt-1">Paket</span>
+                    </a>
+                    <a href="#contact" class="nav-link flex flex-col items-center justify-center text-gray-500 hover:text-indigo-600 w-full transition">
+                        <i class="fas fa-phone-alt text-xl"></i>
+                        <span class="text-xs mt-1">Kontak</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- ===== HALAMAN ADMIN PANEL ===== -->
+        <div id="admin-page" class="page-transition page-hidden min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+            <div class="max-w-7xl mx-auto">
+                 <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Admin Panel</h1>
+                     <button id="back-to-site-button" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 text-sm">Kembali</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Manajemen Konten</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div><label class="block text-sm font-medium text-gray-600 mb-1">Judul Utama</label><input type="text" id="edit-hero-title" class="form-input"></div>
+                        <div><label class="block text-sm font-medium text-gray-600 mb-1">Subjudul</label><input type="text" id="edit-hero-subtitle" class="form-input"></div>
+                         <div><label class="block text-sm font-medium text-gray-600 mb-1">Info Kontak</label><textarea id="edit-contact-info" class="form-input" rows="2"></textarea></div>
+                         <div><label class="block text-sm font-medium text-gray-600 mb-1">No. WhatsApp Admin (tanpa +)</label><input type="text" id="edit-contact-whatsapp" class="form-input" placeholder="6281234567890"></div>
+                    </div>
+                     <button id="save-content-button" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700">Simpan Konten</button>
+                </div>
+                 <div class="bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Manajemen Paket</h2>
+                    <div id="admin-packages-container" class="space-y-4"></div>
+                     <button id="save-packages-button" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700">Simpan Paket</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Pesanan Masuk</h2>
+                    <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WhatsApp</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paket</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th></tr></thead><tbody id="orders-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Pemesanan -->
+    <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative transform transition-all scale-95 opacity-0" id="order-modal-content">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times text-2xl"></i></button>
+            <h2 class="text-2xl font-bold mb-2">Konfirmasi Pesanan</h2>
+            <p class="text-gray-600 mb-4">Anda akan memesan <strong id="modal-package-name"></strong>.</p>
+            <div class="space-y-4">
+                <div><label for="customer-name" class="block text-sm font-medium text-gray-600 mb-1">Nama Anda</label><input type="text" id="customer-name" class="form-input-modal" placeholder="John Doe" required></div>
+                <div><label for="customer-whatsapp" class="block text-sm font-medium text-gray-600 mb-1">Nomor WhatsApp</label><input type="tel" id="customer-whatsapp" class="form-input-modal" placeholder="081234567890" required></div>
+                 <button id="confirm-order-button" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transition-transform transform hover:scale-105">Pesan via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed bottom-20 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg text-sm z-50 transition-opacity duration-300">
+        <p id="toast-message"></p>
+    </div>
+
+
+    <!-- JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // STATE MANAGEMENT (unchanged)
+        let state = {
+            currentUser: null,
+            content: { heroTitle: "Koneksi Internet Cepat & Stabil", heroSubtitle: "Nikmati browsing, streaming, dan gaming tanpa batas dengan voucher WiFi kami. Aktifkan sekarang!", feature1Title: "Super Cepat", feature1Desc: "Download, streaming, dan main game tanpa lag dengan kecepatan tinggi.", feature2Title: "Harga Terjangkau", feature2Desc: "Pilihan paket hemat yang sesuai dengan kebutuhan dan kantong Anda.", feature3Title: "Dukungan 24/7", feature3Desc: "Tim kami siap membantu Anda kapan saja jika mengalami kendala.", contactInfo: "Punya pertanyaan? Jangan ragu untuk menghubungi kami.", contactWhatsapp: "6281234567890" },
+            packages: [ { id: 1, name: "Harian", duration: "1 Hari", price: 5000, speed: "Up to 10 Mbps" }, { id: 2, name: "Mingguan", duration: "7 Hari", price: 25000, speed: "Up to 20 Mbps" }, { id: 3, name: "Bulanan", duration: "30 Hari", price: 100000, speed: "Up to 30 Mbps" }, { id: 4, name: "Gamer Pro", duration: "30 Hari", price: 150000, speed: "Up to 50 Mbps" } ],
+            orders: [],
+            selectedPackage: null
+        };
+        
+        function loadState() { const savedState = JSON.parse(localStorage.getItem('wifiVoucherApp')); if (savedState) { state = { ...state, ...savedState, currentUser: savedState.currentUser || null }; } }
+        function saveState() { localStorage.setItem('wifiVoucherApp', JSON.stringify(state)); }
+
+        // DOM ELEMENTS
+        const pages = { login: document.getElementById('login-page'), main: document.getElementById('main-app'), admin: document.getElementById('admin-page') };
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const headerAuthSection = document.getElementById('header-auth-section');
+        const mobileHeaderAuthSection = document.getElementById('mobile-header-auth-section');
+        const packagesContainer = document.getElementById('packages-container');
+        const adminPackagesContainer = document.getElementById('admin-packages-container');
+        const orderModal = document.getElementById('order-modal');
+        const orderModalContent = document.getElementById('order-modal-content');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const confirmOrderButton = document.getElementById('confirm-order-button');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // RENDER FUNCTIONS
+        function renderContent() { document.getElementById('hero-title').textContent = state.content.heroTitle; document.getElementById('hero-subtitle').textContent = state.content.heroSubtitle; document.getElementById('feature-1-title').textContent = state.content.feature1Title; document.getElementById('feature-1-desc').textContent = state.content.feature1Desc; document.getElementById('feature-2-title').textContent = state.content.feature2Title; document.getElementById('feature-2-desc').textContent = state.content.feature2Desc; document.getElementById('feature-3-title').textContent = state.content.feature3Title; document.getElementById('feature-3-desc').textContent = state.content.feature3Desc; document.getElementById('contact-info').textContent = state.content.contactInfo; const waLink = document.getElementById('contact-whatsapp'); waLink.textContent = `+${state.content.contactWhatsapp}`; waLink.href = `https://wa.me/${state.content.contactWhatsapp}`; }
+        function renderPackages() { packagesContainer.innerHTML = ''; state.packages.forEach(pkg => { const card = document.createElement('div'); card.className = "bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col hover:shadow-indigo-100 hover:border-indigo-300 transition-all duration-300"; card.innerHTML = `<h3 class="text-xl font-bold text-indigo-600 mb-2">${pkg.name}</h3><p class="text-gray-500 mb-4">${pkg.duration} - ${pkg.speed}</p><p class="text-4xl font-extrabold text-gray-800 mb-6 mt-auto">Rp ${pkg.price.toLocaleString('id-ID')}</p><button data-package-id="${pkg.id}" class="buy-button w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">Pesan Sekarang</button>`; packagesContainer.appendChild(card); }); }
+        function renderAdminPackages() { adminPackagesContainer.innerHTML = ''; state.packages.forEach((pkg, index) => { const div = document.createElement('div'); div.className = "grid grid-cols-2 md:grid-cols-5 gap-2 items-center p-2 bg-gray-50 rounded-lg"; div.innerHTML = `<input type="text" data-index="${index}" data-field="name" value="${pkg.name}" placeholder="Nama" class="form-input col-span-2 md:col-span-1"><input type="text" data-index="${index}" data-field="duration" value="${pkg.duration}" placeholder="Durasi" class="form-input"><input type="number" data-index="${index}" data-field="price" value="${pkg.price}" placeholder="Harga" class="form-input"><input type="text" data-index="${index}" data-field="speed" value="${pkg.speed}" placeholder="Kecepatan" class="form-input">`; adminPackagesContainer.appendChild(div); }); }
+        function renderOrdersTable() { const tableBody = document.getElementById('orders-table-body'); tableBody.innerHTML = ''; if (state.orders.length === 0) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">Belum ada pesanan.</td></tr>`; return; } state.orders.forEach(order => { const row = document.createElement('tr'); row.innerHTML = `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.customerName}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customerWhatsapp}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.packageName}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(order.timestamp).toLocaleString('id-ID')}</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Baru</span></td>`; tableBody.appendChild(row); }); }
+
+        // MAIN LOGIC
+        function showPage(pageId) { Object.keys(pages).forEach(key => { const page = pages[key]; page.classList.toggle('page-visible', key === pageId); page.classList.toggle('page-hidden', key !== pageId); }); window.scrollTo(0, 0); }
+
+        function updateAuthUI() {
+            // Desktop UI
+            if (state.currentUser === 'admin') { headerAuthSection.innerHTML = `<button id="admin-panel-link-desktop" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200">Admin Panel</button><button id="logout-button-desktop" class="bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200">Logout</button>`; } else if (state.currentUser === 'client') { headerAuthSection.innerHTML = `<button id="logout-button-desktop" class="bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200">Logout</button>`; } else { headerAuthSection.innerHTML = `<button id="login-button-desktop" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700">Login</button>`; }
+            // Mobile UI
+            if (state.currentUser === 'admin') { mobileHeaderAuthSection.innerHTML = `<button id="admin-panel-link-mobile" class="bg-gray-100 text-gray-700 p-2 rounded-full h-9 w-9 flex items-center justify-center"><i class="fas fa-user-shield"></i></button>`; } else if (state.currentUser === 'client') { mobileHeaderAuthSection.innerHTML = `<button id="logout-button-mobile" class="bg-indigo-100 text-indigo-600 p-2 rounded-full h-9 w-9 flex items-center justify-center"><i class="fas fa-sign-out-alt"></i></button>`; } else { mobileHeaderAuthSection.innerHTML = `<button id="login-button-mobile" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold">Login</button>`; }
+            attachAuthButtonListeners();
+        }
+        
+        function attachAuthButtonListeners() {
+            document.getElementById('admin-panel-link-desktop')?.addEventListener('click', showAdminPanel);
+            document.getElementById('logout-button-desktop')?.addEventListener('click', handleLogout);
+            document.getElementById('login-button-desktop')?.addEventListener('click', () => showPage('login'));
+            document.getElementById('admin-panel-link-mobile')?.addEventListener('click', showAdminPanel);
+            document.getElementById('logout-button-mobile')?.addEventListener('click', handleLogout);
+            document.getElementById('login-button-mobile')?.addEventListener('click', () => showPage('login'));
+        }
+
+        function handleLogin(e) { e.preventDefault(); const username = loginForm.username.value; const password = loginForm.password.value; if (username === 'admin' && password === 'admin123') { state.currentUser = 'admin'; } else if (username === 'client' && password === 'client123') { state.currentUser = 'client'; } else { loginError.textContent = "Username atau password salah."; loginError.classList.remove('hidden'); return; } saveState(); updateAuthUI(); showPage('main'); loginForm.reset(); loginError.classList.add('hidden'); }
+        function handleLogout() { const currentState = JSON.parse(localStorage.getItem('wifiVoucherApp')); if(currentState) { delete currentState.currentUser; localStorage.setItem('wifiVoucherApp', JSON.stringify(currentState)); } loadState(); updateAuthUI(); showPage('main'); }
+        function showAdminPanel() { document.getElementById('edit-hero-title').value = state.content.heroTitle; document.getElementById('edit-hero-subtitle').value = state.content.heroSubtitle; document.getElementById('edit-contact-info').value = state.content.contactInfo; document.getElementById('edit-contact-whatsapp').value = state.content.contactWhatsapp; renderAdminPackages(); renderOrdersTable(); showPage('admin'); }
+        function saveAdminContent() { state.content.heroTitle = document.getElementById('edit-hero-title').value; state.content.heroSubtitle = document.getElementById('edit-hero-subtitle').value; state.content.contactInfo = document.getElementById('edit-contact-info').value; state.content.contactWhatsapp = document.getElementById('edit-contact-whatsapp').value; saveState(); renderContent(); showToast('Konten berhasil disimpan!'); }
+        function saveAdminPackages() { const inputs = adminPackagesContainer.querySelectorAll('input'); inputs.forEach(input => { const index = input.dataset.index; const field = input.dataset.field; const value = field === 'price' ? parseInt(input.value) : input.value; state.packages[index][field] = value; }); saveState(); renderPackages(); showToast('Paket berhasil diperbarui!'); }
+        function openOrderModal(packageId) { if (!state.currentUser) { showToast('Anda harus login untuk memesan.'); showPage('login'); return; } state.selectedPackage = state.packages.find(p => p.id === parseInt(packageId)); if (!state.selectedPackage) return; document.getElementById('modal-package-name').textContent = state.selectedPackage.name; orderModal.classList.remove('hidden'); setTimeout(() => { orderModalContent.classList.remove('scale-95', 'opacity-0'); }, 10); }
+        function closeOrderModal() { orderModalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => { orderModal.classList.add('hidden'); }, 200); }
+        function handleOrder() { const customerName = document.getElementById('customer-name').value; let customerWhatsapp = document.getElementById('customer-whatsapp').value; if(!customerName || !customerWhatsapp) { alert('Nama dan nomor WhatsApp wajib diisi.'); return; } if(customerWhatsapp.startsWith('0')) { customerWhatsapp = '62' + customerWhatsapp.substring(1); } const order = { customerName, customerWhatsapp, packageId: state.selectedPackage.id, packageName: state.selectedPackage.name, price: state.selectedPackage.price, timestamp: new Date().toISOString() }; state.orders.push(order); saveState(); const message = encodeURIComponent( `Halo, saya *${customerName}* mau pesan *Voucher WiFi ${order.packageName}*.\n\nTotal: *Rp ${order.price.toLocaleString('id-ID')}*.\n\nMohon info untuk pembayarannya. Terima kasih.` ); const adminWhatsapp = state.content.contactWhatsapp; const waURL = `https://api.whatsapp.com/send?phone=${adminWhatsapp}&text=${message}`; window.open(waURL, '_blank'); closeOrderModal(); showToast('Pesanan Anda sedang diproses via WhatsApp!'); }
+        function showToast(message) { toastMessage.textContent = message; toast.classList.remove('hidden'); setTimeout(() => { toast.classList.add('hidden'); }, 3000); }
+
+        // INITIALIZATION
+        function init() {
+            loadState();
+            showPage('main');
+            updateAuthUI();
+            renderContent();
+            renderPackages();
+
+            // Event Listeners
+            loginForm.addEventListener('submit', handleLogin);
+            document.getElementById('back-to-promo-button').onclick = () => showPage('main');
+            document.getElementById('back-to-site-button').addEventListener('click', () => showPage('main');
+            document.getElementById('save-content-button').addEventListener('click', saveAdminContent);
+            document.getElementById('save-packages-button').addEventListener('click', saveAdminPackages);
+            closeModalButton.addEventListener('click', closeOrderModal);
+            orderModal.addEventListener('click', (e) => { if (e.target === orderModal) closeOrderModal(); });
+            confirmOrderButton.addEventListener('click', handleOrder);
+            packagesContainer.addEventListener('click', (e) => { if (e.target.classList.contains('buy-button')) { const packageId = e.target.dataset.packageId; openOrderModal(packageId); } });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section, footer');
+            
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach( section => {
+                    const sectionTop = section.offsetTop;
+                    if(pageYOffset >= sectionTop - 100) { current = section.getAttribute('id'); }
+                });
+
+                navLinks.forEach( link => {
+                    link.classList.remove('text-indigo-600'); link.classList.add('text-gray-500');
+                    if(link.getAttribute('href') === `#${current}`) { link.classList.add('text-indigo-600'); link.classList.remove('text-gray-500'); }
+                });
+            });
+        }
+
+        init();
+    });
+    </script>
+</body>
+</html>
+
