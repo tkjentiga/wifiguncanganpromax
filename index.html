@@ -110,20 +110,14 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         let currentView = 'home';
         
-        // --- PERBAIKAN ERROR 1: SINTAKS VARIABEL FOTO DAN BASE64 DIGANTI DENGAN PLACEHOLDER URL YANG VALID ---
+        // --- BASE PATH / BASE URLS ---
         
-        // BASE64 IMAGE PLACEHOLDER (Internal Asset for Portrait/Maskot)
-        const PORTRAIT_MASKOT_BASE64 = poster.jpg;
+        // GANTI URL PLACEHOLDER INI DENGAN PATH RELATIF ANDA (misalnya: "images/maskot.png")
+        // JIKA ANDA MENGUJI LOKAL DAN MEMILIKI FOLDER 'images'
+        const MASKOT_IMAGE_URL = "poster.jpg";
         
-        // Placeholder Foto Staff (digunakan untuk semua staff karena data base64 asli tidak tersedia)
-        const PLACEHOLDER_STAFF_PHOTO = "https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO";
-
-        const ALDA_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO;
-        const BILKIS_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO;
-        const JUARIAH_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO;
-        const KAILA_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO;
-        const KARTINI_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO; 
-        const SITI_PHOTO_BASE64 = PLACEHOLDER_STAFF_PHOTO;
+        // URL PLACEHOLDER DEFAULT UNTUK FOTO STAF. GANTI DENGAN PATH RELATIF (misalnya: "images/foto_default.jpg")
+        const DEFAULT_STAFF_PHOTO_URL = "https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO";
 
 
         // --- FIREBASE SIMULATION (menggunakan localStorage) ---
@@ -139,15 +133,17 @@
                     data.staff = data.staff || [];
                     data.orders = data.orders || [];
 
-                    // PENTING: Jika data produk kosong atau data staff kosong (misalnya karena reset)
+                    // PENTING: Jika data produk kosong
                     if (data.products.length === 0) {
                         initializeNewProducts();
                     }
-                    // ** SELALU INITIALIZE STAFF AGAR SEMUA JABATAN MENJADI "Anggota" **
-                    // Ini memastikan data staff yang valid dengan Base64/placeholder yang telah diperbaiki
-                    initializeNewStaff();
                     
-                    // Simpan data jika ada inisialisasi yang terjadi
+                    // Jika data staff kosong, inisialisasi ulang
+                    if (data.staff.length === 0) {
+                        initializeNewStaff();
+                    }
+                    
+                    // Jika ada inisialisasi yang terjadi, simpan
                     if (data.products.length === 0 || data.staff.length > 0) {
                          saveData();
                     }
@@ -178,16 +174,17 @@
         }
 
 
-        // Fungsi inisialisasi staf baru
+        // Fungsi inisialisasi staf baru (Menggunakan URL/Path yang bisa diubah)
         function initializeNewStaff() {
-            // ** SEMUA POSISI DIUBAH MENJADI "Anggota" SESUAI PERMINTAAN **
+            // PERBAIKAN: Menggunakan URL/Path yang fleksibel
             const newStaffList = [
-                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: ALDA_PHOTO_BASE64 },
-                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: BILKIS_PHOTO_BASE64 },
-                { id: 103, name: "Juariah", position: "Anggota", photo: JUARIAH_PHOTO_BASE64 },
-                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: KAILA_PHOTO_BASE64 },
-                { id: 105, name: "Kartini", position: "Anggota", photo: KARTINI_PHOTO_BASE64 },
-                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: SITI_PHOTO_BASE64 },
+                // JIKA MENGGUNAKAN PATH LOKAL: Ganti 'DEFAULT_STAFF_PHOTO_URL' dengan path relatif, cth: "images/alda.jpg"
+                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
+                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
+                { id: 103, name: "Juariah", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
+                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
+                { id: 105, name: "Kartini", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
+                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: DEFAULT_STAFF_PHOTO_URL },
             ];
             data.staff = newStaffList;
         }
@@ -343,10 +340,10 @@
                 </section>
                 <!-- END POSTER SECTION -->
                 
-                <!-- PORTRAIT IMAGE SECTION (Menggunakan Base64 SVG Internal) -->
+                <!-- PORTRAIT IMAGE SECTION (Menggunakan MASKOT_IMAGE_URL) -->
                 <section class="mb-8 p-4 text-center">
                     <img 
-                        src="${PORTRAIT_MASKOT_BASE64}" 
+                        src="${MASKOT_IMAGE_URL}" 
                         alt="Maskot Layanan Wifi" 
                         class="w-48 h-72 object-cover mx-auto rounded-xl shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300"
                     />
@@ -421,7 +418,7 @@
         function renderStaff() {
             let staffHtml = data.staff.map(s => `
                 <div class="bg-white p-5 rounded-xl shadow-lg text-center flex flex-col items-center">
-                    <!-- MENGGUNAKAN BASE64 DARI DATA INTERNAL (SIMULASI FOTO LOKAL) -->
+                    <!-- Menggunakan path/URL dari data staf -->
                     <img src="${s.photo}" alt="${s.name}" class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md">
                     <h4 class="text-lg font-bold text-gray-800">${s.name}</h4>
                     <!-- Warna diubah menjadi sky-600 -->
@@ -616,7 +613,6 @@
         }
 
         function deleteProduct(id) {
-            // PERBAIKAN ERROR 2: Menghapus penggunaan confirm() yang akan memblokir iFrame
             data.products = data.products.filter(p => p.id !== id);
             saveData();
             renderCMSProducts();
@@ -631,7 +627,7 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="p-3 font-semibold">${s.name}</td>
                     <td class="p-3">${s.position}</td>
-                    <!-- Gambar Base64 disajikan sebagai thumbnail kecil -->
+                    <!-- Gambar menggunakan s.photo (bisa path relatif atau URL) -->
                     <td class="p-3"><img src="${s.photo}" class="w-8 h-8 rounded-full inline-block" alt="Foto"></td>
                     <td class="p-3 space-x-2 whitespace-nowrap">
                         <button onclick="editStaff(${s.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
@@ -642,6 +638,7 @@
 
             cmsContent.innerHTML = `
                 <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Manajemen Pengurus</h3>
+                <p class="text-sm text-gray-500 mb-4">Anda dapat menggunakan path relatif (contoh: <code>images/foto.jpg</code>) atau URL lengkap untuk gambar.</p>
                 <!-- Warna tombol diubah menjadi sky-500 -->
                 <button onclick="showStaffForm()" class="cms-btn mb-4 bg-sky-500 hover:bg-sky-600"><i class="fas fa-plus mr-2"></i> Tambah Pengurus</button>
 
@@ -677,8 +674,8 @@
                     <form id="staff-form" onsubmit="saveStaff(event, ${staff.id || null})">
                         <input type="text" id="s-name" class="cms-input" placeholder="Nama Lengkap" value="${staff.name || ''}" required>
                         <input type="text" id="s-position" class="cms-input" placeholder="Posisi Kepengurusan" value="${staff.position || 'Anggota'}" required>
-                        <!-- PENTING: Untuk CMS demo, kita izinkan input URL. Jika ingin BASE64, input harus diisi dengan data URI yang valid. Default diisi Base64 Placeholder untuk memudahkan pengeditan -->
-                        <input type="text" id="s-photo" class="cms-input" placeholder="Data URI Foto (Base64 atau URL)" value="${staff.photo || 'https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO'}" required>
+                        <!-- PENTING: Input ini dapat diisi dengan path relatif (images/nama.jpg) atau URL lengkap -->
+                        <input type="text" id="s-photo" class="cms-input" placeholder="Path Gambar (cth: images/foto.jpg atau URL)" value="${staff.photo || DEFAULT_STAFF_PHOTO_URL}" required>
 
                         <div class="flex space-x-2">
                             <!-- Warna tombol Simpan/Update tetap hijau untuk Success/Save -->
@@ -699,13 +696,6 @@
                 photo: form.querySelector('#s-photo').value,
             };
             
-            // Validasi sederhana jika pengguna mencoba memasukkan URL eksternal yang tidak valid
-            if (!newStaff.photo.startsWith('data:image/') && !newStaff.photo.startsWith('http')) {
-                 showMessage("Gagal Menyimpan", "Format foto tidak valid. Gunakan Base64 Data URI atau URL lengkap.");
-                 return;
-            }
-
-
             if (id) {
                 // Edit
                 const index = data.staff.findIndex(s => s.id === id);
@@ -729,8 +719,6 @@
         }
 
         function deleteStaff(id) {
-            // PERBAIKAN ERROR 2: Menghapus penggunaan confirm() yang akan memblokir iFrame
-            // PERBAIKAN ERROR 3: Menggunakan 's' (staf) di filter, bukan 'p'
             data.staff = data.staff.filter(s => s.id !== id);
             saveData();
             renderCMSStaff();
