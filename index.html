@@ -3,365 +3,785 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WiFi Guncangan ProMax - Voucher WiFi Cepat</title>
+    <title>Wifi Guncangan Promax</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+        /* Menggunakan font Inter */
+        html { font-family: 'Inter', sans-serif; }
+        /* Mengatur agar konten utama tidak tertutup header/footer */
+        #app-content {
+            padding-top: 64px; /* Tinggi header */
+            padding-bottom: 72px; /* Tinggi navbar bawah */
+            min-height: 100vh;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        
-        /* Page transition classes */
-        .page-transition { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-        .page-hidden { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; width: 100%; }
-        .page-visible { opacity: 1; transform: translateY(0); position: relative; }
-
-        /* Custom utility classes */
-        .form-input { @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition; }
-        .form-input-modal { @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition; }
+        /* Style untuk CMS form - Warna utama diubah menjadi sky blue */
+        .cms-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .cms-btn {
+            /* Sky 500 */
+            background-color: #0ea5e9;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .cms-btn:hover {
+            /* Sky 600 */
+            background-color: #0284c7;
+        }
+        /* Kelas untuk scrollbar tersembunyi (opsional) */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
-<body class="antialiased text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
-    <!-- Container Utama -->
-    <div id="app-container" class="max-w-7xl mx-auto relative">
-
-        <!-- ===== HALAMAN LOGIN (Tersembunyi secara default) ===== -->
-        <div id="login-page" class="page-transition page-hidden min-h-screen flex items-center justify-center px-4 bg-gray-50">
-            <div class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-lg">
-                <div class="flex justify-center mb-6">
-                    <div class="flex items-center space-x-2">
-                         <svg class="h-10 w-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
-                        </svg>
-                        <span class="text-2xl font-bold text-gray-800">WiFi Guncangan ProMax</span>
-                    </div>
-                </div>
-                <h2 class="text-2xl font-bold text-center text-gray-700 mb-2">Login Akun</h2>
-                <p class="text-center text-gray-500 mb-6">Login untuk memesan atau mengelola situs.</p>
-                <div id="login-error" class="hidden bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm"></div>
-                <form id="login-form">
-                    <div class="mb-4">
-                        <label for="username" class="block text-sm font-medium text-gray-600 mb-2">Username</label>
-                        <input type="text" id="username" class="form-input-modal" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="password" class="block text-sm font-medium text-gray-600 mb-2">Password</label>
-                        <input type="password" id="password" class="form-input-modal" required>
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">
-                        Login
-                    </button>
-                    <button type="button" id="back-to-promo-button" class="w-full mt-2 text-sm text-center text-gray-600 hover:text-indigo-600 py-2">Kembali ke halaman utama</button>
-                </form>
-                 <p class="text-xs text-center text-gray-400 mt-4">Demo: <br>Admin (user: admin, pass: admin123) <br> Client (user: client, pass: client123)</p>
+    <!-- Header (Static Top) -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+        <div class="max-w-screen-md mx-auto p-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <!-- Logo Sederhana (Emoji) - Internal Asset -->
+                <span class="text-3xl text-sky-500 font-bold">⚡</span>
+                <h1 class="text-xl font-bold text-gray-800">WIFI GUNCANGAN PROMAX</h1>
+            </div>
+            <div id="loading-indicator" class="hidden text-sm text-sky-500 font-semibold animate-pulse">
+                Memproses...
             </div>
         </div>
+    </header>
 
-        <!-- ===== APLIKASI UTAMA / HALAMAN PROMOSI (Tampil secara default) ===== -->
-        <div id="main-app" class="page-transition page-visible">
-            
-            <!-- Mobile Header -->
-            <header class="md:hidden bg-white/80 backdrop-blur-lg sticky top-0 z-40 w-full border-b border-gray-200 flex items-center justify-between h-16 px-4">
-                <div class="flex items-center space-x-1.5">
-                    <svg class="h-7 w-7 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
-                    </svg>
-                    <span class="text-base font-bold text-gray-800">WiFi Guncangan ProMax</span>
-                </div>
-                <div id="mobile-header-auth-section">
-                    <!-- Tombol Login/Logout mobile dirender di sini oleh JS -->
-                </div>
-            </header>
+    <!-- Content Area -->
+    <main id="app-content" class="max-w-screen-md mx-auto p-4 transition-opacity duration-300">
+        <!-- Konten akan dimuat di sini oleh JavaScript -->
+        <h2 class="text-2xl font-bold text-center mt-10 text-gray-600">Memuat...</h2>
+    </main>
 
-            <!-- Desktop Header -->
-            <header class="hidden md:flex bg-white/80 backdrop-blur-lg sticky top-0 z-40 w-full border-b border-gray-200">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                    <div class="flex justify-between items-center h-16">
-                        <div class="flex items-center space-x-2">
-                            <svg class="h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.045A7.5 7.5 0 1 0 9.75 2.25h.008a7.5 7.5 0 0 0 7.492 7.251 7.5 7.5 0 0 1 5.25 5.25 7.5 7.5 0 0 0-14.25 0Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6H6a6 6 0 0 0 6 6Z" />
-                            </svg>
-                            <span class="text-2xl font-bold text-gray-800">WiFi Guncangan ProMax</span>
-                        </div>
-                        <nav class="hidden md:flex space-x-8">
-                             <a href="#home" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Home</a>
-                             <a href="#packages" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Paket</a>
-                             <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Kontak</a>
-                        </nav>
-                        <div id="header-auth-section" class="flex items-center space-x-4">
-                            <!-- Tombol Login/Logout desktop akan dirender oleh JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Konten Utama -->
-            <main class="pt-0 md:pt-0 pb-24 md:pb-0">
-                <!-- Hero Section -->
-                <section id="home" class="px-4 py-12 sm:py-16 md:py-24 text-center bg-white">
-                    <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">Koneksi Internet Cepat & Stabil</h1>
-                    <p id="hero-subtitle" class="max-w-2xl mx-auto text-base sm:text-lg text-gray-600 mb-8">Nikmati browsing, streaming, dan gaming tanpa batas dengan voucher WiFi kami. Aktifkan sekarang!</p>
-                    <a href="#packages" class="nav-link bg-indigo-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 inline-block">Lihat Paket</a>
-                </section>
-
-                <!-- Fitur Section -->
-                <section id="features" class="py-16 md:py-20 bg-gray-50">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="text-center mb-12">
-                            <h2 class="text-3xl font-bold text-gray-900">Kenapa Memilih WiFi Guncangan ProMax?</h2>
-                            <p class="text-gray-600 mt-2">Kami menawarkan lebih dari sekedar koneksi internet.</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
-                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
-                                    <i class="fas fa-rocket text-2xl text-indigo-600"></i>
-                                </div>
-                                <h3 id="feature-1-title" class="text-xl font-semibold mb-2">Super Cepat</h3>
-                                <p id="feature-1-desc" class="text-gray-600">Download, streaming, dan main game tanpa lag dengan kecepatan tinggi.</p>
-                            </div>
-                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
-                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
-                                    <i class="fas fa-wallet text-2xl text-indigo-600"></i>
-                                </div>
-                                <h3 id="feature-2-title" class="text-xl font-semibold mb-2">Harga Terjangkau</h3>
-                                <p id="feature-2-desc" class="text-gray-600">Pilihan paket hemat yang sesuai dengan kebutuhan dan kantong Anda.</p>
-                            </div>
-                            <div class="bg-white p-8 rounded-2xl shadow-md text-center">
-                                <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mx-auto mb-4">
-                                    <i class="fas fa-headset text-2xl text-indigo-600"></i>
-                                </div>
-                                <h3 id="feature-3-title" class="text-xl font-semibold mb-2">Dukungan 24/7</h3>
-                                <p id="feature-3-desc" class="text-gray-600">Tim kami siap membantu Anda kapan saja jika mengalami kendala.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Paket Voucher Section -->
-                <section id="packages" class="py-16 md:py-20">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="text-center mb-12">
-                            <h2 class="text-3xl font-bold text-gray-900">Pilihan Paket Voucher</h2>
-                            <p class="text-gray-600 mt-2">Pilih paket yang paling sesuai untuk Anda.</p>
-                        </div>
-                        <div id="packages-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <!-- Paket dirender oleh JavaScript -->
-                        </div>
-                    </div>
-                </section>
-                
-                 <!-- Contact Section -->
-                <footer id="contact" class="bg-gray-800 text-white py-12">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h3 class="text-2xl font-bold mb-2">Hubungi Kami</h3>
-                        <p id="contact-info" class="text-gray-400 mb-4">Punya pertanyaan? Jangan ragu untuk menghubungi kami.</p>
-                        <p class="font-semibold">Email: <a href="mailto:support@wifiguncanganpromax.com" id="contact-email" class="text-indigo-400 hover:underline">support@wifiguncanganpromax.com</a></p>
-                        <p class="font-semibold">WhatsApp: <a href="#" id="contact-whatsapp" class="text-indigo-400 hover:underline">+62 812-3456-7890</a></p>
-                         <div class="mt-6 text-sm text-gray-500">
-                            &copy; 2025 WiFi Guncangan ProMax. All Rights Reserved.
-                        </div>
-                    </div>
-                </footer>
-            </main>
-
-            <!-- Bottom Navbar (Mobile) -->
-            <nav id="bottom-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
-                <div class="flex justify-around h-16 items-center">
-                    <a href="#home" class="nav-link flex flex-col items-center justify-center text-indigo-600 w-full transition">
-                        <i class="fas fa-home text-xl"></i>
-                        <span class="text-xs mt-1">Home</span>
-                    </a>
-                    <a href="#packages" class="nav-link flex flex-col items-center justify-center text-gray-500 hover:text-indigo-600 w-full transition">
-                        <i class="fas fa-wifi text-xl"></i>
-                        <span class="text-xs mt-1">Paket</span>
-                    </a>
-                    <a href="#contact" class="nav-link flex flex-col items-center justify-center text-gray-500 hover:text-indigo-600 w-full transition">
-                        <i class="fas fa-phone-alt text-xl"></i>
-                        <span class="text-xs mt-1">Kontak</span>
-                    </a>
-                </div>
-            </nav>
+    <!-- Bottom Navigation Bar (Static Bottom) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-10">
+        <div class="max-w-screen-md mx-auto flex justify-around items-center h-16">
+            <!-- Warna aktif diubah menjadi text-sky-500 -->
+            <button class="nav-item flex flex-col items-center p-2 text-sky-500 transition-colors" data-view="home">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs font-medium">Beranda</span>
+            </button>
+            <!-- Warna hover diubah menjadi hover:text-sky-500 -->
+            <button class="nav-item flex flex-col items-center p-2 text-gray-500 hover:text-sky-500 transition-colors" data-view="products">
+                <i class="fas fa-wifi text-xl"></i>
+                <span class="text-xs font-medium">Voucher</span>
+            </button>
+            <button class="nav-item flex flex-col items-center p-2 text-gray-500 hover:text-sky-500 transition-colors" data-view="staff">
+                <i class="fas fa-users text-xl"></i>
+                <span class="text-xs font-medium">Pengurus</span>
+            </button>
+            <button class="nav-item flex flex-col items-center p-2 text-gray-500 hover:text-sky-500 transition-colors" data-view="cms">
+                <i class="fas fa-cog text-xl"></i>
+                <span class="text-xs font-medium">CMS</span>
+            </button>
         </div>
-        
-        <!-- ===== HALAMAN ADMIN PANEL ===== -->
-        <div id="admin-page" class="page-transition page-hidden min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
-            <div class="max-w-7xl mx-auto">
-                 <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Admin Panel</h1>
-                     <button id="back-to-site-button" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 text-sm">Kembali</button>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-md mb-6">
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Manajemen Konten</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div><label class="block text-sm font-medium text-gray-600 mb-1">Judul Utama</label><input type="text" id="edit-hero-title" class="form-input"></div>
-                        <div><label class="block text-sm font-medium text-gray-600 mb-1">Subjudul</label><input type="text" id="edit-hero-subtitle" class="form-input"></div>
-                         <div><label class="block text-sm font-medium text-gray-600 mb-1">Info Kontak</label><textarea id="edit-contact-info" class="form-input" rows="2"></textarea></div>
-                         <div><label class="block text-sm font-medium text-gray-600 mb-1">No. WhatsApp Admin (tanpa +)</label><input type="text" id="edit-contact-whatsapp" class="form-input" placeholder="6281234567890"></div>
-                    </div>
-                     <button id="save-content-button" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700">Simpan Konten</button>
-                </div>
-                 <div class="bg-white p-6 rounded-2xl shadow-md mb-6">
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Manajemen Paket</h2>
-                    <div id="admin-packages-container" class="space-y-4"></div>
-                     <button id="save-packages-button" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700">Simpan Paket</button>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-md">
-                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 border-b pb-2">Pesanan Masuk</h2>
-                    <div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">WhatsApp</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paket</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th></tr></thead><tbody id="orders-table-body" class="bg-white divide-y divide-gray-200"></tbody></table></div>
-                </div>
-            </div>
-        </div>
+    </nav>
 
-    </div>
-
-    <!-- Modal Pemesanan -->
-    <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative transform transition-all scale-95 opacity-0" id="order-modal-content">
-            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fas fa-times text-2xl"></i></button>
-            <h2 class="text-2xl font-bold mb-2">Konfirmasi Pesanan</h2>
-            <p class="text-gray-600 mb-4">Anda akan memesan <strong id="modal-package-name"></strong>.</p>
-            <div class="space-y-4">
-                <div><label for="customer-name" class="block text-sm font-medium text-gray-600 mb-1">Nama Anda</label><input type="text" id="customer-name" class="form-input-modal" placeholder="John Doe" required></div>
-                <div><label for="customer-whatsapp" class="block text-sm font-medium text-gray-600 mb-1">Nomor WhatsApp</label><input type="tel" id="customer-whatsapp" class="form-input-modal" placeholder="081234567890" required></div>
-                 <button id="confirm-order-button" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transition-transform transform hover:scale-105">Pesan via WhatsApp</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Toast Notification -->
-    <div id="toast" class="hidden fixed bottom-20 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg text-sm z-50 transition-opacity duration-300">
-        <p id="toast-message"></p>
-    </div>
-
-
-    <!-- JavaScript -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // STATE MANAGEMENT (unchanged)
-        let state = {
-            currentUser: null,
-            content: { heroTitle: "Koneksi Internet Cepat & Stabil", heroSubtitle: "Nikmati browsing, streaming, dan gaming tanpa batas dengan voucher WiFi kami. Aktifkan sekarang!", feature1Title: "Super Cepat", feature1Desc: "Download, streaming, dan main game tanpa lag dengan kecepatan tinggi.", feature2Title: "Harga Terjangkau", feature2Desc: "Pilihan paket hemat yang sesuai dengan kebutuhan dan kantong Anda.", feature3Title: "Dukungan 24/7", feature3Desc: "Tim kami siap membantu Anda kapan saja jika mengalami kendala.", contactInfo: "Punya pertanyaan? Jangan ragu untuk menghubungi kami.", contactWhatsapp: "6281234567890" },
-            packages: [ { id: 1, name: "Harian", duration: "1 Hari", price: 5000, speed: "Up to 10 Mbps" }, { id: 2, name: "Mingguan", duration: "7 Hari", price: 25000, speed: "Up to 20 Mbps" }, { id: 3, name: "Bulanan", duration: "30 Hari", price: 100000, speed: "Up to 30 Mbps" }, { id: 4, name: "Gamer Pro", duration: "30 Hari", price: 150000, speed: "Up to 50 Mbps" } ],
+        // GLOBAL VARIABLES
+        let data = {
+            products: [],
+            staff: [],
             orders: [],
-            selectedPackage: null
+            isCMSLoggedIn: false,
+            cmsPassword: "admin123" // Password sederhana untuk demo
         };
+
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'wifi-guncangan-promax-default'; // Menggunakan ID Aplikasi dari Canvas
+        const appContent = document.getElementById('app-content');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let currentView = 'home';
         
-        function loadState() { const savedState = JSON.parse(localStorage.getItem('wifiVoucherApp')); if (savedState) { state = { ...state, ...savedState, currentUser: savedState.currentUser || null }; } }
-        function saveState() { localStorage.setItem('wifiVoucherApp', JSON.stringify(state)); }
+        // BASE64 SVG IMAGE (Internal Asset for Portrait/Maskot)
+        const PORTRAIT_MASKOT_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNDUwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0NTAiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIxMjUiIHI9IjYwIiBmaWxsPSIjMDVhZWU5Ii8+PHBhdGggZD0iTTE1MCA0NTBhMTEwIDExMCAwIDAgMSAtMTEwIC0xMTBoMjIwYTEwMCAxMDAgMCAwIDEgLTEwMCAxMTBaIiBmaWxsPSIjMDVhZWU5Ii8+PHRleHQgeD0iMTUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJTYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T1NT</dGV4dD48L3N2Zz4=';
 
-        // DOM ELEMENTS
-        const pages = { login: document.getElementById('login-page'), main: document.getElementById('main-app'), admin: document.getElementById('admin-page') };
-        const loginForm = document.getElementById('login-form');
-        const loginError = document.getElementById('login-error');
-        const headerAuthSection = document.getElementById('header-auth-section');
-        const mobileHeaderAuthSection = document.getElementById('mobile-header-auth-section');
-        const packagesContainer = document.getElementById('packages-container');
-        const adminPackagesContainer = document.getElementById('admin-packages-container');
-        const orderModal = document.getElementById('order-modal');
-        const orderModalContent = document.getElementById('order-modal-content');
-        const closeModalButton = document.getElementById('close-modal-button');
-        const confirmOrderButton = document.getElementById('confirm-order-button');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toast-message');
+        // --- BASE64 SVG IMAGE UNTUK PENGURUS (SIMULASI FOTO LOKAL) ---
+        const ALDA_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzBlYTVlOSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BPC90ZXh0Pjwvc3ZnPg==';
+        const BILKIS_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzEwYjk4MSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CPC90ZXh0Pjwvc3ZnPg==';
+        const JUARIAH_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2Y1OWUwYiIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==';
+        const KAILA_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2VjNDg5OSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LPC90ZXh0Pjwvc3ZnPg==';
+        const KARTINI_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2VmNDQ0NCIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UPC90ZXh0Pjwvc3ZnPg=='; 
+        const SITI_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzYzNjZmMSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TPC90ZXh0Pjwvc3ZnPg==';
 
-        // RENDER FUNCTIONS
-        function renderContent() { document.getElementById('hero-title').textContent = state.content.heroTitle; document.getElementById('hero-subtitle').textContent = state.content.heroSubtitle; document.getElementById('feature-1-title').textContent = state.content.feature1Title; document.getElementById('feature-1-desc').textContent = state.content.feature1Desc; document.getElementById('feature-2-title').textContent = state.content.feature2Title; document.getElementById('feature-2-desc').textContent = state.content.feature2Desc; document.getElementById('feature-3-title').textContent = state.content.feature3Title; document.getElementById('feature-3-desc').textContent = state.content.feature3Desc; document.getElementById('contact-info').textContent = state.content.contactInfo; const waLink = document.getElementById('contact-whatsapp'); waLink.textContent = `+${state.content.contactWhatsapp}`; waLink.href = `https://wa.me/${state.content.contactWhatsapp}`; }
-        function renderPackages() { packagesContainer.innerHTML = ''; state.packages.forEach(pkg => { const card = document.createElement('div'); card.className = "bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex flex-col hover:shadow-indigo-100 hover:border-indigo-300 transition-all duration-300"; card.innerHTML = `<h3 class="text-xl font-bold text-indigo-600 mb-2">${pkg.name}</h3><p class="text-gray-500 mb-4">${pkg.duration} - ${pkg.speed}</p><p class="text-4xl font-extrabold text-gray-800 mb-6 mt-auto">Rp ${pkg.price.toLocaleString('id-ID')}</p><button data-package-id="${pkg.id}" class="buy-button w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-transform transform hover:scale-105">Pesan Sekarang</button>`; packagesContainer.appendChild(card); }); }
-        function renderAdminPackages() { adminPackagesContainer.innerHTML = ''; state.packages.forEach((pkg, index) => { const div = document.createElement('div'); div.className = "grid grid-cols-2 md:grid-cols-5 gap-2 items-center p-2 bg-gray-50 rounded-lg"; div.innerHTML = `<input type="text" data-index="${index}" data-field="name" value="${pkg.name}" placeholder="Nama" class="form-input col-span-2 md:col-span-1"><input type="text" data-index="${index}" data-field="duration" value="${pkg.duration}" placeholder="Durasi" class="form-input"><input type="number" data-index="${index}" data-field="price" value="${pkg.price}" placeholder="Harga" class="form-input"><input type="text" data-index="${index}" data-field="speed" value="${pkg.speed}" placeholder="Kecepatan" class="form-input">`; adminPackagesContainer.appendChild(div); }); }
-        function renderOrdersTable() { const tableBody = document.getElementById('orders-table-body'); tableBody.innerHTML = ''; if (state.orders.length === 0) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">Belum ada pesanan.</td></tr>`; return; } state.orders.forEach(order => { const row = document.createElement('tr'); row.innerHTML = `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.customerName}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customerWhatsapp}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.packageName}</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(order.timestamp).toLocaleString('id-ID')}</td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Baru</span></td>`; tableBody.appendChild(row); }); }
 
-        // MAIN LOGIC
-        function showPage(pageId) { Object.keys(pages).forEach(key => { const page = pages[key]; page.classList.toggle('page-visible', key === pageId); page.classList.toggle('page-hidden', key !== pageId); }); window.scrollTo(0, 0); }
+        // --- FIREBASE SIMULATION (menggunakan localStorage) ---
 
-        function updateAuthUI() {
-            // Desktop UI
-            if (state.currentUser === 'admin') { headerAuthSection.innerHTML = `<button id="admin-panel-link-desktop" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-200">Admin Panel</button><button id="logout-button-desktop" class="bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200">Logout</button>`; } else if (state.currentUser === 'client') { headerAuthSection.innerHTML = `<button id="logout-button-desktop" class="bg-indigo-100 text-indigo-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200">Logout</button>`; } else { headerAuthSection.innerHTML = `<button id="login-button-desktop" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700">Login</button>`; }
-            // Mobile UI
-            if (state.currentUser === 'admin') { mobileHeaderAuthSection.innerHTML = `<button id="admin-panel-link-mobile" class="bg-gray-100 text-gray-700 p-2 rounded-full h-9 w-9 flex items-center justify-center"><i class="fas fa-user-shield"></i></button>`; } else if (state.currentUser === 'client') { mobileHeaderAuthSection.innerHTML = `<button id="logout-button-mobile" class="bg-indigo-100 text-indigo-600 p-2 rounded-full h-9 w-9 flex items-center justify-center"><i class="fas fa-sign-out-alt"></i></button>`; } else { mobileHeaderAuthSection.innerHTML = `<button id="login-button-mobile" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold">Login</button>`; }
-            attachAuthButtonListeners();
+        function loadData() {
+            try {
+                const storedData = localStorage.getItem(APP_ID + '_data');
+                if (storedData) {
+                    // Jika data sudah ada di localStorage, muat data yang tersimpan
+                    data = JSON.parse(storedData);
+                    // Pastikan semua array ada
+                    data.products = data.products || [];
+                    data.staff = data.staff || [];
+                    data.orders = data.orders || [];
+
+                    // PENTING: Jika data produk kosong atau data staff kosong (misalnya karena reset)
+                    if (data.products.length === 0) {
+                        initializeNewProducts();
+                    }
+                    // ** SELALU INITIALIZE STAFF AGAR SEMUA JABATAN MENJADI "Anggota" **
+                    initializeNewStaff();
+                    
+                    // Simpan data jika ada inisialisasi yang terjadi
+                    if (data.products.length === 0 || data.staff.length > 0) {
+                         saveData();
+                    }
+
+
+                } else {
+                    // Data Awal jika LocalStorage kosong
+                    initializeNewProducts(); // Inisialisasi produk baru
+                    initializeNewStaff(); // Inisialisasi staff baru
+                    data.orders = [];
+                    saveData();
+                }
+            } catch (error) {
+                console.error("Gagal memuat data dari LocalStorage:", error);
+            }
         }
         
-        function attachAuthButtonListeners() {
-            document.getElementById('admin-panel-link-desktop')?.addEventListener('click', showAdminPanel);
-            document.getElementById('logout-button-desktop')?.addEventListener('click', handleLogout);
-            document.getElementById('login-button-desktop')?.addEventListener('click', () => showPage('login'));
-            document.getElementById('admin-panel-link-mobile')?.addEventListener('click', showAdminPanel);
-            document.getElementById('logout-button-mobile')?.addEventListener('click', handleLogout);
-            document.getElementById('login-button-mobile')?.addEventListener('click', () => showPage('login'));
+        // Fungsi inisialisasi produk baru sesuai permintaan
+        function initializeNewProducts() {
+            data.products = [
+                // Paket 1: 3 Jam (2.000)
+                { id: 1, name: "Voucher Harian - Hemat", speed: "5 Mbps", duration: "3 Jam", price: 2000, whatsappText: "Halo, saya ingin memesan Paket 3 Jam (Rp 2.000)." },
+                // Paket 2: 6 Jam (3.000)
+                { id: 2, name: "Voucher Harian - Standar", speed: "10 Mbps", duration: "6 Jam", price: 3000, whatsappText: "Halo, saya ingin memesan Paket 6 Jam (Rp 3.000)." },
+                // Paket 3: 12 Jam (5.000)
+                { id: 3, name: "Voucher Harian - Jumbo", speed: "15 Mbps", duration: "12 Jam", price: 5000, whatsappText: "Halo, saya ingin memesan Paket 12 Jam (Rp 5.000)." },
+            ];
         }
 
-        function handleLogin(e) { e.preventDefault(); const username = loginForm.username.value; const password = loginForm.password.value; if (username === 'admin' && password === 'admin123') { state.currentUser = 'admin'; } else if (username === 'client' && password === 'client123') { state.currentUser = 'client'; } else { loginError.textContent = "Username atau password salah."; loginError.classList.remove('hidden'); return; } saveState(); updateAuthUI(); showPage('main'); loginForm.reset(); loginError.classList.add('hidden'); }
-        function handleLogout() { const currentState = JSON.parse(localStorage.getItem('wifiVoucherApp')); if(currentState) { delete currentState.currentUser; localStorage.setItem('wifiVoucherApp', JSON.stringify(currentState)); } loadState(); updateAuthUI(); showPage('main'); }
-        function showAdminPanel() { document.getElementById('edit-hero-title').value = state.content.heroTitle; document.getElementById('edit-hero-subtitle').value = state.content.heroSubtitle; document.getElementById('edit-contact-info').value = state.content.contactInfo; document.getElementById('edit-contact-whatsapp').value = state.content.contactWhatsapp; renderAdminPackages(); renderOrdersTable(); showPage('admin'); }
-        function saveAdminContent() { state.content.heroTitle = document.getElementById('edit-hero-title').value; state.content.heroSubtitle = document.getElementById('edit-hero-subtitle').value; state.content.contactInfo = document.getElementById('edit-contact-info').value; state.content.contactWhatsapp = document.getElementById('edit-contact-whatsapp').value; saveState(); renderContent(); showToast('Konten berhasil disimpan!'); }
-        function saveAdminPackages() { const inputs = adminPackagesContainer.querySelectorAll('input'); inputs.forEach(input => { const index = input.dataset.index; const field = input.dataset.field; const value = field === 'price' ? parseInt(input.value) : input.value; state.packages[index][field] = value; }); saveState(); renderPackages(); showToast('Paket berhasil diperbarui!'); }
-        function openOrderModal(packageId) { if (!state.currentUser) { showToast('Anda harus login untuk memesan.'); showPage('login'); return; } state.selectedPackage = state.packages.find(p => p.id === parseInt(packageId)); if (!state.selectedPackage) return; document.getElementById('modal-package-name').textContent = state.selectedPackage.name; orderModal.classList.remove('hidden'); setTimeout(() => { orderModalContent.classList.remove('scale-95', 'opacity-0'); }, 10); }
-        function closeOrderModal() { orderModalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => { orderModal.classList.add('hidden'); }, 200); }
-        function handleOrder() { const customerName = document.getElementById('customer-name').value; let customerWhatsapp = document.getElementById('customer-whatsapp').value; if(!customerName || !customerWhatsapp) { alert('Nama dan nomor WhatsApp wajib diisi.'); return; } if(customerWhatsapp.startsWith('0')) { customerWhatsapp = '62' + customerWhatsapp.substring(1); } const order = { customerName, customerWhatsapp, packageId: state.selectedPackage.id, packageName: state.selectedPackage.name, price: state.selectedPackage.price, timestamp: new Date().toISOString() }; state.orders.push(order); saveState(); const message = encodeURIComponent( `Halo, saya *${customerName}* mau pesan *Voucher WiFi ${order.packageName}*.\n\nTotal: *Rp ${order.price.toLocaleString('id-ID')}*.\n\nMohon info untuk pembayarannya. Terima kasih.` ); const adminWhatsapp = state.content.contactWhatsapp; const waURL = `https://api.whatsapp.com/send?phone=${adminWhatsapp}&text=${message}`; window.open(waURL, '_blank'); closeOrderModal(); showToast('Pesanan Anda sedang diproses via WhatsApp!'); }
-        function showToast(message) { toastMessage.textContent = message; toast.classList.remove('hidden'); setTimeout(() => { toast.classList.add('hidden'); }, 3000); }
 
-        // INITIALIZATION
-        function init() {
-            loadState();
-            showPage('main');
-            updateAuthUI();
-            renderContent();
-            renderPackages();
+        // Fungsi inisialisasi staf baru
+        function initializeNewStaff() {
+            // ** SEMUA POSISI DIUBAH MENJADI "Anggota" SESUAI PERMINTAAN **
+            const newStaffList = [
+                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: ALDA_PHOTO_BASE64 },
+                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: BILKIS_PHOTO_BASE64 },
+                { id: 103, name: "Juariah", position: "Anggota", photo: JUARIAH_PHOTO_BASE64 },
+                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: KAILA_PHOTO_BASE64 },
+                { id: 105, name: "Kartini", position: "Anggota", photo: KARTINI_PHOTO_BASE64 },
+                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: SITI_PHOTO_BASE64 },
+            ];
+            data.staff = newStaffList;
+        }
 
-            // Event Listeners
-            loginForm.addEventListener('submit', handleLogin);
-            document.getElementById('back-to-promo-button').onclick = () => showPage('main');
-            document.getElementById('back-to-site-button').addEventListener('click', () => showPage('main');
-            document.getElementById('save-content-button').addEventListener('click', saveAdminContent);
-            document.getElementById('save-packages-button').addEventListener('click', saveAdminPackages);
-            closeModalButton.addEventListener('click', closeOrderModal);
-            orderModal.addEventListener('click', (e) => { if (e.target === orderModal) closeOrderModal(); });
-            confirmOrderButton.addEventListener('click', handleOrder);
-            packagesContainer.addEventListener('click', (e) => { if (e.target.classList.contains('buy-button')) { const packageId = e.target.dataset.packageId; openOrderModal(packageId); } });
+        function saveData() {
+            try {
+                localStorage.setItem(APP_ID + '_data', JSON.stringify(data));
+            } catch (error) {
+                console.error("Gagal menyimpan data ke LocalStorage:", error);
+            }
+        }
+
+        function showLoading(show) {
+            loadingIndicator.classList.toggle('hidden', !show);
+            appContent.classList.toggle('opacity-50', show);
+            appContent.classList.toggle('pointer-events-none', show);
+        }
+
+        // --- ORDERING FUNCTION ---
+        function handleOrder(productId) {
+            const product = data.products.find(p => p.id === productId);
+            if (!product) return console.error("Produk tidak ditemukan.");
+
+            const phoneNumber = "6281234567890"; // GANTI DENGAN NOMOR WHATSAPP ANDA
+            const message = encodeURIComponent(product.whatsappText + "\n\n(Mohon sertakan nama dan alamat lengkap Anda untuk pengiriman voucher/instalasi).");
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            // SIMULASI PENCATATAN ORDER KE 'DATABASE'
+            const newOrder = {
+                id: Date.now(),
+                productName: product.name,
+                price: product.price,
+                timestamp: new Date().toISOString(),
+                status: 'Menunggu Konfirmasi WA'
+            };
+            data.orders.push(newOrder);
+            saveData();
+
+            // Tampilkan notifikasi dan alihkan ke WhatsApp
+            showMessage("Pemesanan otomatis!", `Anda akan dialihkan ke WhatsApp untuk memesan: ${product.name}. Order telah dicatat.`);
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 1500);
+        }
+
+        // --- MESSAGE BOX (Pengganti alert()) ---
+        function showMessage(title, message) {
+            const messageBox = document.createElement('div');
+            messageBox.id = 'custom-message-box';
+            messageBox.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            messageBox.innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center transform transition-all scale-100 duration-300">
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <h3 class="text-xl font-bold mb-2 text-sky-600">${title}</h3>
+                    <p class="text-gray-700 mb-4">${message}</p>
+                    <!-- Warna tombol diubah menjadi sky-500 -->
+                    <button id="close-message" class="cms-btn bg-sky-500 hover:bg-sky-600 w-full">OK</button>
+                </div>
+            `;
+            document.body.appendChild(messageBox);
             
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('section, footer');
-            
-            navLinks.forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('close-message').onclick = () => {
+                messageBox.remove();
+            };
+        }
+
+
+        // --- VIEW RENDERING FUNCTIONS ---
+
+        function updateNav(view) {
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                // Warna aktif diubah
+                if (btn.getAttribute('data-view') === view) {
+                    btn.classList.add('text-sky-500');
+                    btn.classList.remove('text-gray-500', 'hover:text-sky-500');
+                } else {
+                    btn.classList.remove('text-sky-500');
+                    btn.classList.add('text-gray-500', 'hover:text-sky-500');
+                }
+            });
+            currentView = view;
+        }
+
+        function navigate(view) {
+            showLoading(true);
+            setTimeout(() => {
+                updateNav(view);
+                switch (view) {
+                    case 'products':
+                        renderProducts();
+                        break;
+                    case 'staff':
+                        renderStaff();
+                        break;
+                    case 'cms':
+                        if (data.isCMSLoggedIn) {
+                            renderCMSDashboard();
+                        } else {
+                            renderCMSLogin();
+                        }
+                        break;
+                    case 'home':
+                    default:
+                        renderHome();
+                }
+                showLoading(false);
+            }, 300); // Simulasi waktu loading
+        }
+
+        // 1. HOME VIEW
+        function renderHome() {
+            appContent.innerHTML = `
+                <section class="text-center p-6 bg-white rounded-xl shadow-lg mb-8">
+                    <div class="text-5xl mb-4">🚀</div>
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <h2 class="text-3xl font-extrabold text-sky-600 mb-2">Selamat Datang!</h2>
+                    <p class="text-gray-600 mb-4">Rasakan koneksi tercepat dan stabil bersama Wifi Guncangan Promax. Pilihan voucher yang fleksibel untuk kebutuhan internet Anda.</p>
+                    <button onclick="navigate('products')" class="cms-btn bg-sky-500 hover:bg-sky-600">Lihat Semua Voucher</button>
+                </section>
+
+                <!-- POSTER / PAMPHLET SECTION (Menggunakan background SVG internal) -->
+                <section class="mb-8 p-6 bg-sky-700 rounded-xl shadow-2xl relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-repeat" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMjEgMEw0MCAwTDQwIDIwTDYwIDIwTDIwIDYwTDMyIDQ4TDMwIDM0TDIwIDM0TDIwIDI0TDM2IDI0TDM2IDMyTDQ4IDIwTDIwIDM2TDIwIDYwTDBfNjBMMzAyNkwtMjAgMjZMNC0yTDItMTRMMjEgMEwiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjwvZz48L2c+PC9zdmc+')"></div>
+                    
+                    <div class="relative z-10 text-white text-center">
+                        <h3 class="text-4xl font-extrabold mb-1 tracking-wider uppercase text-yellow-300 transform -rotate-1 skew-x-3">
+                            PROMO VOUCHER GILA!
+                        </h3>
+                        <p class="text-xl font-semibold mb-4 text-white">Dapatkan koneksi secepat kilat dengan harga termurah!</p>
+
+                        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+                            <!-- Voucher 2K -->
+                            <div class="bg-white text-sky-700 p-3 rounded-lg shadow-xl border-b-4 border-red-500 w-full sm:w-1/3">
+                                <p class="text-2xl font-black">2.000</p>
+                                <p class="text-sm font-semibold">3 Jam Nonstop</p>
+                            </div>
+                            <!-- Voucher 3K -->
+                            <div class="bg-white text-sky-700 p-3 rounded-lg shadow-xl border-b-4 border-red-500 w-full sm:w-1/3">
+                                <p class="text-2xl font-black">3.000</p>
+                                <p class="text-sm font-semibold">6 Jam Nonstop</p>
+                            </div>
+                            <!-- Voucher 5K -->
+                            <div class="bg-white text-sky-700 p-3 rounded-lg shadow-xl border-b-4 border-red-500 w-full sm:w-1/3">
+                                <p class="text-2xl font-black">5.000</p>
+                                <p class="text-sm font-semibold">12 Jam Nonstop</p>
+                            </div>
+                        </div>
+                        
+                        <button onclick="navigate('products')" class="cms-btn bg-yellow-400 text-sky-800 hover:bg-yellow-300 font-bold mt-2">
+                            <i class="fas fa-arrow-alt-circle-right mr-2"></i> LIHAT DETAIL PAKET
+                        </button>
+                    </div>
+                </section>
+                <!-- END POSTER SECTION -->
+                
+                <!-- PORTRAIT IMAGE SECTION (Menggunakan Base64 SVG Internal) -->
+                <section class="mb-8 p-4 text-center">
+                    <img 
+                        src="${PORTRAIT_MASKOT_BASE64}" 
+                        alt="Maskot Layanan Wifi" 
+                        class="w-48 h-72 object-cover mx-auto rounded-xl shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300"
+                    />
+                    <p class="mt-4 text-gray-500 text-sm font-medium">Koneksi stabil, harga bersahabat. Segera hubungi pengurus!</p>
+                </section>
+                <!-- END IMAGE SECTION -->
+
+                <section class="mb-8">
+                    <!-- Warna diubah menjadi sky-500 -->
+                    <h3 class="text-2xl font-bold mb-4 border-l-4 border-sky-500 pl-3">Mengapa Memilih Kami?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                            <i class="fas fa-bolt text-3xl text-yellow-500 mb-2"></i>
+                            <p class="font-semibold">Kecepatan Maksimal</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                            <i class="fas fa-lock text-3xl text-green-500 mb-2"></i>
+                            <p class="font-semibold">Koneksi Stabil</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-md text-center">
+                            <i class="fas fa-headset text-3xl text-red-500 mb-2"></i>
+                            <p class="font-semibold">Layanan Cepat</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <!-- Warna diubah menjadi sky-500 -->
+                    <h3 class="text-2xl font-bold mb-4 border-l-4 border-sky-500 pl-3">Lokasi Kami</h3>
+                    <div class="bg-white p-4 rounded-xl shadow-md">
+                        <!-- Placeholder Map/Alamat -->
+                        <p class="text-gray-600">Kami melayani area Cikande dan sekitarnya. Hubungi pengurus kami untuk instalasi!</p>
+                        <!-- Warna diubah menjadi sky-500 -->
+                        <button onclick="navigate('staff')" class="mt-3 text-sm text-sky-500 hover:text-sky-700 font-semibold">Lihat Kontak Pengurus &rarr;</button>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 2. PRODUCTS VIEW (Vouchers)
+        function renderProducts() {
+            let productsHtml = data.products.map(p => `
+                <!-- Warna border diubah menjadi sky-500 -->
+                <div class="bg-white p-5 rounded-xl shadow-lg border-t-4 border-sky-500 transform hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-3">
+                        <h4 class="text-xl font-bold text-gray-800">${p.name}</h4>
+                        <!-- Warna diubah menjadi sky-600 -->
+                        <div class="text-3xl font-extrabold text-sky-600">Rp ${p.price.toLocaleString('id-ID')}</div>
+                    </div>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 mb-4">
+                        <li class="text-sky-500">Kecepatan: <span class="font-semibold text-blue-500">${p.speed}</span></li>
+                        <li>Durasi: <span class="font-semibold">${p.duration}</span></li>
+                        <li>Untuk: 1 Perangkat</li>
+                    </ul>
+                    <!-- Warna tombol WA tetap hijau untuk identitas brand WA -->
+                    <button onclick="handleOrder(${p.id})" class="cms-btn bg-green-500 hover:bg-green-600 w-full flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Pesan Otomatis via WA</span>
+                    </button>
+                </div>
+            `).join('');
+
+            appContent.innerHTML = `
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Daftar Voucher Wifi</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${productsHtml}
+                </div>
+            `;
+        }
+
+        // 3. STAFF VIEW (Pengurus)
+        function renderStaff() {
+            let staffHtml = data.staff.map(s => `
+                <div class="bg-white p-5 rounded-xl shadow-lg text-center flex flex-col items-center">
+                    <!-- MENGGUNAKAN BASE64 DARI DATA INTERNAL (SIMULASI FOTO LOKAL) -->
+                    <img src="${s.photo}" alt="${s.name}" class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md">
+                    <h4 class="text-lg font-bold text-gray-800">${s.name}</h4>
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <p class="text-sky-600 font-semibold">${s.position}</p>
+                    <p class="text-sm text-gray-500 mt-2">ID: ${s.id}</p>
+                </div>
+            `).join('');
+
+            appContent.innerHTML = `
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-700">Anggota Pengurus Website</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                    ${staffHtml}
+                </div>
+            `;
+        }
+
+        // 4. CMS LOGIN VIEW
+        function renderCMSLogin() {
+            appContent.innerHTML = `
+                <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl mt-10">
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <h2 class="text-3xl font-bold mb-6 text-center text-sky-600">CMS Login</h2>
+                    <p class="text-center text-sm text-gray-500 mb-6">Password Demo: <code>admin123</code></p>
+                    <input type="password" id="cms-password" class="cms-input" placeholder="Masukkan Password CMS">
+                    <!-- Warna tombol diubah menjadi sky-500 (menggunakan cms-btn) -->
+                    <button onclick="loginCMS()" class="cms-btn w-full">Masuk ke Dashboard</button>
+                </div>
+            `;
+        }
+
+        function loginCMS() {
+            const passwordInput = document.getElementById('cms-password');
+            if (passwordInput.value === data.cmsPassword) {
+                data.isCMSLoggedIn = true;
+                renderCMSDashboard();
+            } else {
+                showMessage("Login Gagal", "Password yang Anda masukkan salah.");
+            }
+        }
+
+        function logoutCMS() {
+            data.isCMSLoggedIn = false;
+            navigate('cms');
+            showMessage("Logout Berhasil", "Anda telah keluar dari CMS.");
+        }
+
+
+        // 5. CMS DASHBOARD VIEW
+        function renderCMSDashboard() {
+            appContent.innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-2xl mb-8">
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <div class="flex justify-between items-center mb-6 border-b pb-3">
+                        <h2 class="text-3xl font-bold text-sky-600">CMS Dashboard</h2>
+                        <button onclick="logoutCMS()" class="text-red-500 hover:text-red-700 font-semibold text-sm">Logout</button>
+                    </div>
+
+                    <!-- Tabs Menu -->
+                    <div class="flex mb-6 border-b">
+                        <!-- Warna aktif diubah menjadi bg-sky-500 -->
+                        <button id="tab-products" class="tab-btn px-4 py-2 font-semibold text-white bg-sky-500 rounded-t-lg transition-colors" data-target="products-manager">Voucher (${data.products.length})</button>
+                        <!-- Warna hover diubah menjadi hover:text-sky-500 -->
+                        <button id="tab-staff" class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-sky-500 transition-colors" data-target="staff-manager">Pengurus (${data.staff.length})</button>
+                        <button id="tab-orders" class="tab-btn px-4 py-2 font-semibold text-gray-600 hover:text-sky-500 transition-colors" data-target="orders-manager">Order (${data.orders.length})</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div id="cms-content">
+                        <!-- Content will be rendered here -->
+                    </div>
+                </div>
+            `;
+            // Initialize tab logic
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        // Mengganti warna tab saat tidak aktif
+                        btn.classList.remove('bg-sky-500', 'text-white');
+                        btn.classList.add('text-gray-600', 'hover:text-sky-500');
+                    });
+                    // Mengganti warna tab saat aktif
+                    this.classList.add('bg-sky-500', 'text-white');
+                    this.classList.remove('text-gray-600', 'hover:text-sky-500');
+
+                    const target = this.getAttribute('data-target');
+                    if (target === 'products-manager') renderCMSProducts();
+                    if (target === 'staff-manager') renderCMSStaff();
+                    if (target === 'orders-manager') renderCMSOrders();
                 });
             });
 
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach( section => {
-                    const sectionTop = section.offsetTop;
-                    if(pageYOffset >= sectionTop - 100) { current = section.getAttribute('id'); }
-                });
-
-                navLinks.forEach( link => {
-                    link.classList.remove('text-indigo-600'); link.classList.add('text-gray-500');
-                    if(link.getAttribute('href') === `#${current}`) { link.classList.add('text-indigo-600'); link.classList.remove('text-gray-500'); }
-                });
-            });
+            // Default view: Products
+            renderCMSProducts();
         }
 
-        init();
-    });
+        // CMS: PRODUCTS MANAGER
+        function renderCMSProducts() {
+            const cmsContent = document.getElementById('cms-content');
+            
+            let productListHtml = data.products.map(p => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3 font-semibold">${p.name}</td>
+                    <td class="p-3">${p.speed} / ${p.duration}</td>
+                    <td class="p-3">Rp ${p.price.toLocaleString('id-ID')}</td>
+                    <td class="p-3 space-x-2 whitespace-nowrap">
+                        <button onclick="editProduct(${p.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteProduct(${p.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            cmsContent.innerHTML = `
+                <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Manajemen Voucher</h3>
+                <!-- Warna tombol diubah menjadi sky-500 -->
+                <button onclick="showProductForm()" class="cms-btn mb-4 bg-sky-500 hover:bg-sky-600"><i class="fas fa-plus mr-2"></i> Tambah Voucher</button>
+
+                <div class="overflow-x-auto rounded-lg shadow-md">
+                    <table class="min-w-full bg-white text-sm">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="p-3 text-left">Nama</th>
+                                <th class="p-3 text-left">Spesifikasi</th>
+                                <th class="p-3 text-left">Harga</th>
+                                <th class="p-3 text-left">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${productListHtml}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="product-form-container" class="mt-8"></div>
+            `;
+        }
+
+        function showProductForm(product = {}) {
+            const container = document.getElementById('product-form-container');
+            const isEdit = !!product.id;
+
+            container.innerHTML = `
+                <div class="bg-gray-100 p-6 rounded-xl shadow-inner border border-gray-300">
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <h4 class="text-xl font-bold mb-4 text-sky-600">${isEdit ? 'Edit Voucher' : 'Tambah Voucher Baru'}</h4>
+                    <form id="product-form" onsubmit="saveProduct(event, ${product.id || null})">
+                        <input type="text" id="p-name" class="cms-input" placeholder="Nama Voucher (cth: Harian Premium)" value="${product.name || ''}" required>
+                        <input type="text" id="p-speed" class="cms-input" placeholder="Kecepatan (cth: 20 Mbps)" value="${product.speed || ''}" required>
+                        <input type="text" id="p-duration" class="cms-input" placeholder="Durasi (cth: 30 Hari)" value="${product.duration || ''}" required>
+                        <input type="number" id="p-price" class="cms-input" placeholder="Harga (cth: 80000)" value="${product.price || ''}" required>
+                        <textarea id="p-whatsappText" class="cms-input" rows="3" placeholder="Pesan WhatsApp Otomatis (cth: Halo, saya mau beli Voucher...)">${product.whatsappText || ''}</textarea>
+
+                        <div class="flex space-x-2">
+                            <!-- Warna tombol Simpan/Update tetap hijau untuk Success/Save -->
+                            <button type="submit" class="cms-btn bg-green-500 hover:bg-green-600">${isEdit ? 'Update' : 'Simpan'}</button>
+                            <button type="button" onclick="document.getElementById('product-form-container').innerHTML = ''" class="cms-btn bg-gray-500 hover:bg-gray-600">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+        function saveProduct(event, id) {
+            event.preventDefault();
+            const form = event.target;
+            const newProduct = {
+                name: form.querySelector('#p-name').value,
+                speed: form.querySelector('#p-speed').value,
+                duration: form.querySelector('#p-duration').value,
+                price: parseInt(form.querySelector('#p-price').value),
+                whatsappText: form.querySelector('#p-whatsappText').value,
+            };
+
+            if (id) {
+                // Edit
+                const index = data.products.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    data.products[index] = { ...data.products[index], ...newProduct };
+                    showMessage("Berhasil", "Voucher berhasil diupdate!");
+                }
+            } else {
+                // Tambah Baru
+                newProduct.id = Date.now();
+                data.products.push(newProduct);
+                showMessage("Berhasil", "Voucher baru berhasil ditambahkan!");
+            }
+            saveData();
+            renderCMSProducts();
+        }
+
+        function editProduct(id) {
+            const product = data.products.find(p => p.id === id);
+            if (product) showProductForm(product);
+        }
+
+        function deleteProduct(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus voucher ini?")) {
+                data.products = data.products.filter(p => p.id !== id);
+                saveData();
+                renderCMSProducts();
+                showMessage("Terhapus", "Voucher berhasil dihapus.");
+            }
+        }
+
+        // CMS: STAFF MANAGER
+        function renderCMSStaff() {
+            const cmsContent = document.getElementById('cms-content');
+
+            let staffListHtml = data.staff.map(s => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3 font-semibold">${s.name}</td>
+                    <td class="p-3">${s.position}</td>
+                    <!-- Gambar Base64 disajikan sebagai thumbnail kecil -->
+                    <td class="p-3"><img src="${s.photo}" class="w-8 h-8 rounded-full inline-block" alt="Foto"></td>
+                    <td class="p-3 space-x-2 whitespace-nowrap">
+                        <button onclick="editStaff(${s.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteStaff(${s.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            cmsContent.innerHTML = `
+                <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Manajemen Pengurus</h3>
+                <!-- Warna tombol diubah menjadi sky-500 -->
+                <button onclick="showStaffForm()" class="cms-btn mb-4 bg-sky-500 hover:bg-sky-600"><i class="fas fa-plus mr-2"></i> Tambah Pengurus</button>
+
+                <div class="overflow-x-auto rounded-lg shadow-md">
+                    <table class="min-w-full bg-white text-sm">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="p-3 text-left">Nama</th>
+                                <th class="p-3 text-left">Posisi</th>
+                                <th class="p-3 text-left">Foto</th>
+                                <th class="p-3 text-left">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${staffListHtml}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="staff-form-container" class="mt-8"></div>
+            `;
+            // Re-bind to default staff tab
+            document.getElementById('tab-staff').click();
+        }
+
+        function showStaffForm(staff = {}) {
+            const container = document.getElementById('staff-form-container');
+            const isEdit = !!staff.id;
+
+            container.innerHTML = `
+                <div class="bg-gray-100 p-6 rounded-xl shadow-inner border border-gray-300">
+                    <!-- Warna diubah menjadi sky-600 -->
+                    <h4 class="text-xl font-bold mb-4 text-sky-600">${isEdit ? 'Edit Pengurus' : 'Tambah Pengurus Baru'}</h4>
+                    <form id="staff-form" onsubmit="saveStaff(event, ${staff.id || null})">
+                        <input type="text" id="s-name" class="cms-input" placeholder="Nama Lengkap" value="${staff.name || ''}" required>
+                        <input type="text" id="s-position" class="cms-input" placeholder="Posisi Kepengurusan" value="${staff.position || 'Anggota'}" required>
+                        <!-- PENTING: Untuk CMS demo, kita izinkan input URL. Jika ingin BASE64, input harus diisi dengan data URI yang valid. Default diisi Base64 Placeholder untuk memudahkan pengeditan -->
+                        <input type="text" id="s-photo" class="cms-input" placeholder="Data URI Foto (Base64 atau URL)" value="${staff.photo || 'https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO'}" required>
+
+                        <div class="flex space-x-2">
+                            <!-- Warna tombol Simpan/Update tetap hijau untuk Success/Save -->
+                            <button type="submit" class="cms-btn bg-green-500 hover:bg-green-600">${isEdit ? 'Update' : 'Simpan'}</button>
+                            <button type="button" onclick="document.getElementById('staff-form-container').innerHTML = ''" class="cms-btn bg-gray-500 hover:bg-gray-600">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+        function saveStaff(event, id) {
+            event.preventDefault();
+            const form = event.target;
+            const newStaff = {
+                name: form.querySelector('#s-name').value,
+                position: form.querySelector('#s-position').value,
+                photo: form.querySelector('#s-photo').value,
+            };
+            
+            // Validasi sederhana jika pengguna mencoba memasukkan URL eksternal yang tidak valid
+            if (!newStaff.photo.startsWith('data:image/') && !newStaff.photo.startsWith('http')) {
+                 showMessage("Gagal Menyimpan", "Format foto tidak valid. Gunakan Base64 Data URI atau URL lengkap.");
+                 return;
+            }
+
+
+            if (id) {
+                // Edit
+                const index = data.staff.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    data.staff[index] = { ...data.staff[index], ...newStaff };
+                    showMessage("Berhasil", "Data pengurus berhasil diupdate!");
+                }
+            } else {
+                // Tambah Baru
+                newStaff.id = Date.now();
+                data.staff.push(newStaff);
+                showMessage("Berhasil", "Pengurus baru berhasil ditambahkan!");
+            }
+            saveData();
+            renderCMSStaff();
+        }
+
+        function editStaff(id) {
+            const staff = data.staff.find(s => s.id === id);
+            if (staff) showStaffForm(staff);
+        }
+
+        function deleteStaff(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus pengurus ini?")) {
+                data.staff = data.staff.filter(s => p.id !== id);
+                saveData();
+                renderCMSStaff();
+                showMessage("Terhapus", "Pengurus berhasil dihapus.");
+            }
+        }
+
+        // CMS: ORDERS MANAGER (Simulasi Log Pemesanan)
+        function renderCMSOrders() {
+            const cmsContent = document.getElementById('cms-content');
+
+            let orderListHtml = data.orders.reverse().map(o => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3 font-semibold">${o.productName}</td>
+                    <td class="p-3">Rp ${o.price.toLocaleString('id-ID')}</td>
+                    <td class="p-3">${new Date(o.timestamp).toLocaleString('id-ID')}</td>
+                    <td class="p-3"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">${o.status}</span></td>
+                </tr>
+            `).join('');
+
+            cmsContent.innerHTML = `
+                <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Log Pemesanan (Simulasi Spreadsheet)</h3>
+                <p class="text-sm text-gray-500 mb-4">Ini adalah catatan pemesanan otomatis yang dikirimkan ke WhatsApp (simulasi database). Data ini disimpan di browser Anda.</p>
+
+                <div class="overflow-x-auto rounded-lg shadow-md">
+                    <table class="min-w-full bg-white text-sm">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="p-3 text-left">Produk</th>
+                                <th class="p-3 text-left">Harga</th>
+                                <th class="p-3 text-left">Waktu Order</th>
+                                <th class="p-3 text-left">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orderListHtml.length > 0 ? orderListHtml : `<tr><td colspan="4" class="text-center p-5 text-gray-500">Belum ada pemesanan yang tercatat.</td></tr>`}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            // Re-bind to default orders tab
+            document.getElementById('tab-orders').click();
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            navigate('home');
+
+            // Event listener for bottom navigation
+            document.querySelectorAll('.nav-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    navigate(this.getAttribute('data-view'));
+                });
+            });
+        });
     </script>
 </body>
 </html>
-
