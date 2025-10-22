@@ -102,7 +102,7 @@
             staff: [],
             orders: [],
             isCMSLoggedIn: false,
-            //cmsPassword: "admin123" // Password sederhana untuk demo
+            cmsPassword: "admin123" // Password sederhana untuk demo
         };
 
         const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'wifi-guncangan-promax-default'; // Menggunakan ID Aplikasi dari Canvas
@@ -441,7 +441,7 @@
                 <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl mt-10">
                     <!-- Warna diubah menjadi sky-600 -->
                     <h2 class="text-3xl font-bold mb-6 text-center text-sky-600">CMS Login</h2>
-                    <p class="text-center text-sm text-gray-500 mb-6">Password Demo: <code>admin123</code></p>
+                   
                     <input type="password" id="cms-password" class="cms-input" placeholder="Masukkan Password CMS">
                     <!-- Warna tombol diubah menjadi sky-500 (menggunakan cms-btn) -->
                     <button onclick="loginCMS()" class="cms-btn w-full">Masuk ke Dashboard</button>
