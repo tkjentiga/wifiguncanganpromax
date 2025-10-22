@@ -55,8 +55,13 @@
     <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
         <div class="max-w-screen-md mx-auto p-3 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <!-- Logo Sederhana (Emoji) - Internal Asset -->
-                <span class="text-3xl text-sky-500 font-bold">⚡</span>
+                <!-- MODIFIKASI: Mengganti emoji (⚡) dengan tag <img> yang menunjuk ke file lokal -->
+                <img 
+                    src="images/logo.png" 
+                    alt="Logo Wifi Guncangan Promax" 
+                    class="h-8 w-8 object-contain" 
+                    onerror="this.onerror=null; this.src='https://placehold.co/32x32/0ea5e9/ffffff?text=L'"
+                >
                 <h1 class="text-xl font-bold text-gray-800">WIFI GUNCANGAN PROMAX</h1>
             </div>
             <div id="loading-indicator" class="hidden text-sm text-sky-500 font-semibold animate-pulse">
@@ -112,12 +117,12 @@
         
         // --- BASE PATH / BASE URLS ---
         
-        // GANTI URL PLACEHOLDER INI DENGAN PATH RELATIF ANDA (misalnya: "images/maskot.png")
-        // JIKA ANDA MENGUJI LOKAL DAN MEMILIKI FOLDER 'images'
-        const MASKOT_IMAGE_URL = "poster.jpg";
+        // PATH LOKAL: Ganti URL placeholder ini dengan path relatif Anda.
+        // Asumsi: Semua gambar akan disimpan di folder 'images' bersama dengan index.html.
+        const MASKOT_IMAGE_URL = "images/poster.jpg";
         
-        // URL PLACEHOLDER DEFAULT UNTUK FOTO STAF. GANTI DENGAN PATH RELATIF (misalnya: "images/foto_default.jpg")
-        const DEFAULT_STAFF_PHOTO_URL = "https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO";
+        // PATH LOKAL: URL DEFAULT UNTUK FOTO STAF
+        const DEFAULT_STAFF_PHOTO_URL = "images/default_staff.png";
 
 
         // --- FIREBASE SIMULATION (menggunakan localStorage) ---
@@ -174,17 +179,16 @@
         }
 
 
-        // Fungsi inisialisasi staf baru (Menggunakan URL/Path yang bisa diubah)
+        // Fungsi inisialisasi staf baru (Menggunakan PATH LOKAL)
         function initializeNewStaff() {
-            // PERBAIKAN: Menggunakan URL/Path yang fleksibel
+            // PENTING: Menggunakan path relatif di folder 'images/'
             const newStaffList = [
-                // JIKA MENGGUNAKAN PATH LOKAL: Ganti 'DEFAULT_STAFF_PHOTO_URL' dengan path relatif, cth: "images/alda.jpg"
-                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: alda.jpg },
-                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: bil.jpg },
-                { id: 103, name: "Juariah", position: "Anggota", photo: juu.jpg },
-                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: kai.jpg },
-                { id: 105, name: "Kartini", position: "Anggota", photo: kar.jpg },
-                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: mai.jpg },
+                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: "images/alda.jpg" },
+                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: "images/bil.jpg" },
+                { id: 103, name: "Juariah", position: "Anggota", photo: "images/juu.jpg" },
+                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: "images/kai.jpg" },
+                { id: 105, name: "Kartini", position: "Anggota", photo: "images/kar.jpg" },
+                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: "images/mai.jpg" },
             ];
             data.staff = newStaffList;
         }
@@ -346,6 +350,7 @@
                         src="${MASKOT_IMAGE_URL}" 
                         alt="Maskot Layanan Wifi" 
                         class="w-48 h-72 object-cover mx-auto rounded-xl shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300"
+                        onerror="this.onerror=null; this.src='https://placehold.co/192x288/0ea5e9/ffffff?text=POSTER'"
                     />
                     <p class="mt-4 text-gray-500 text-sm font-medium">Koneksi stabil, harga bersahabat. Segera hubungi pengurus!</p>
                 </section>
@@ -419,7 +424,12 @@
             let staffHtml = data.staff.map(s => `
                 <div class="bg-white p-5 rounded-xl shadow-lg text-center flex flex-col items-center">
                     <!-- Menggunakan path/URL dari data staf -->
-                    <img src="${s.photo}" alt="${s.name}" class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md">
+                    <img 
+                        src="${s.photo}" 
+                        alt="${s.name}" 
+                        class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md"
+                        onerror="this.onerror=null; this.src='${DEFAULT_STAFF_PHOTO_URL}';"
+                    >
                     <h4 class="text-lg font-bold text-gray-800">${s.name}</h4>
                     <!-- Warna diubah menjadi sky-600 -->
                     <p class="text-sky-600 font-semibold">${s.position}</p>
@@ -628,7 +638,14 @@
                     <td class="p-3 font-semibold">${s.name}</td>
                     <td class="p-3">${s.position}</td>
                     <!-- Gambar menggunakan s.photo (bisa path relatif atau URL) -->
-                    <td class="p-3"><img src="${s.photo}" class="w-8 h-8 rounded-full inline-block" alt="Foto"></td>
+                    <td class="p-3">
+                        <img 
+                            src="${s.photo}" 
+                            class="w-8 h-8 rounded-full inline-block" 
+                            alt="Foto"
+                            onerror="this.onerror=null; this.src='${DEFAULT_STAFF_PHOTO_URL}';"
+                        >
+                    </td>
                     <td class="p-3 space-x-2 whitespace-nowrap">
                         <button onclick="editStaff(${s.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
                         <button onclick="deleteStaff(${s.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
@@ -638,7 +655,7 @@
 
             cmsContent.innerHTML = `
                 <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Manajemen Pengurus</h3>
-                <p class="text-sm text-gray-500 mb-4">Anda dapat menggunakan path relatif (contoh: <code>images/foto.jpg</code>) atau URL lengkap untuk gambar.</p>
+                <p class="text-sm text-gray-500 mb-4">Anda dapat menggunakan path relatif (contoh: <code>images/foto.jpg</code>) untuk gambar.</p>
                 <!-- Warna tombol diubah menjadi sky-500 -->
                 <button onclick="showStaffForm()" class="cms-btn mb-4 bg-sky-500 hover:bg-sky-600"><i class="fas fa-plus mr-2"></i> Tambah Pengurus</button>
 
@@ -674,8 +691,8 @@
                     <form id="staff-form" onsubmit="saveStaff(event, ${staff.id || null})">
                         <input type="text" id="s-name" class="cms-input" placeholder="Nama Lengkap" value="${staff.name || ''}" required>
                         <input type="text" id="s-position" class="cms-input" placeholder="Posisi Kepengurusan" value="${staff.position || 'Anggota'}" required>
-                        <!-- PENTING: Input ini dapat diisi dengan path relatif (images/nama.jpg) atau URL lengkap -->
-                        <input type="text" id="s-photo" class="cms-input" placeholder="Path Gambar (cth: images/foto.jpg atau URL)" value="${staff.photo || DEFAULT_STAFF_PHOTO_URL}" required>
+                        <!-- Input ini menggunakan DEFAULT_STAFF_PHOTO_URL sebagai fallback/nilai default -->
+                        <input type="text" id="s-photo" class="cms-input" placeholder="Path Gambar (cth: images/foto.jpg)" value="${staff.photo || DEFAULT_STAFF_PHOTO_URL}" required>
 
                         <div class="flex space-x-2">
                             <!-- Warna tombol Simpan/Update tetap hijau untuk Success/Save -->
@@ -714,7 +731,7 @@
         }
 
         function editStaff(id) {
-            const staff = data.staff.find(s => s.id === id);
+            const staff = data.staff.find(s => p.id === id);
             if (staff) showStaffForm(staff);
         }
 
