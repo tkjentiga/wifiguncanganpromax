@@ -57,7 +57,7 @@
             <div class="flex items-center space-x-2">
                 <!-- MODIFIKASI: Mengganti emoji (⚡) dengan tag <img> yang menunjuk ke file lokal -->
                 <img 
-                    src="logo.jpg" 
+                    src=logo.jpg 
                     alt="Logo Wifi Guncangan Promax" 
                     class="h-8 w-8 object-contain" 
                     onerror="this.onerror=null; this.src='https://placehold.co/32x32/0ea5e9/ffffff?text=L'"
@@ -119,7 +119,7 @@
         
         // PATH LOKAL: Ganti URL placeholder ini dengan path relatif Anda.
         // Asumsi: Semua gambar akan disimpan di folder 'images' bersama dengan index.html.
-        const MASKOT_IMAGE_URL = "poster.jpg";
+        const MASKOT_IMAGE_URL = poster.jpg;
         
         // PATH LOKAL: URL DEFAULT UNTUK FOTO STAF
         const DEFAULT_STAFF_PHOTO_URL = "images/default_staff.png";
@@ -183,12 +183,12 @@
         function initializeNewStaff() {
             // PENTING: Menggunakan path relatif di folder 'images/'
             const newStaffList = [
-                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: "alda.jpg" },
-                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: "bil.jpg" },
-                { id: 103, name: "Juariah", position: "Anggota", photo: "juu.jpg" },
-                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: "kai.jpg" },
-                { id: 105, name: "Kartini", position: "Anggota", photo: "kar.jpg" },
-                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: "mai.jpg" },
+                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: alda.jpg },
+                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: bil.jpg },
+                { id: 103, name: "Juariah", position: "Anggota", photo: juu.jpg },
+                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: kai.jpg },
+                { id: 105, name: "Kartini", position: "Anggota", photo: kar.jpg },
+                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: mai.jpg },
             ];
             data.staff = newStaffList;
         }
@@ -212,7 +212,7 @@
             const product = data.products.find(p => p.id === productId);
             if (!product) return console.error("Produk tidak ditemukan.");
 
-            const phoneNumber = "6281234567890"; // GANTI DENGAN NOMOR WHATSAPP ANDA
+            const phoneNumber = "6285779160680"; // GANTI DENGAN NOMOR WHATSAPP ANDA
             const message = encodeURIComponent(product.whatsappText + "\n\n(Mohon sertakan nama dan alamat lengkap Anda untuk pengiriman voucher/instalasi).");
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
