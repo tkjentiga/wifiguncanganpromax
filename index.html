@@ -55,13 +55,8 @@
     <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
         <div class="max-w-screen-md mx-auto p-3 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <!-- MODIFIKASI: Mengganti emoji (⚡) dengan tag <img> yang menunjuk ke file lokal -->
-                <img 
-                    src=logo.jpg 
-                    alt="Logo Wifi Guncangan Promax" 
-                    class="h-8 w-8 object-contain" 
-                    onerror="this.onerror=null; this.src='https://placehold.co/32x32/0ea5e9/ffffff?text=L'"
-                >
+                <!-- Logo Sederhana (Emoji) - Internal Asset -->
+                <span class="text-3xl text-sky-500 font-bold">⚡</span>
                 <h1 class="text-xl font-bold text-gray-800">WIFI GUNCANGAN PROMAX</h1>
             </div>
             <div id="loading-indicator" class="hidden text-sm text-sky-500 font-semibold animate-pulse">
@@ -115,14 +110,16 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         let currentView = 'home';
         
-        // --- BASE PATH / BASE URLS ---
-        
-        // PATH LOKAL: Ganti URL placeholder ini dengan path relatif Anda.
-        // Asumsi: Semua gambar akan disimpan di folder 'images' bersama dengan index.html.
-        const MASKOT_IMAGE_URL = poster.jpg;
-        
-        // PATH LOKAL: URL DEFAULT UNTUK FOTO STAF
-        const DEFAULT_STAFF_PHOTO_URL = "images/default_staff.png";
+        // BASE64 SVG IMAGE (Internal Asset for Portrait/Maskot)
+        const PORTRAIT_MASKOT_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNDUwIiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ1MCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0NTAiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIxMjUiIHI9IjYwIiBmaWxsPSIjMDVhZWU5Ii8+PHBhdGggZD0iTTE1MCA0NTBhMTEwIDExMCAwIDAgMSAtMTEwIC0xMTBoMjIwYTEwMCAxMDAgMCAwIDEgLTEwMCAxMTBaIiBmaWxsPSIjMDVhZWU5Ii8+PHRleHQgeD0iMTUwIiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJTYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+T1NT</dGV4dD48L3N2Zz4=';
+
+        // --- BASE64 SVG IMAGE UNTUK PENGURUS (SIMULASI FOTO LOKAL) ---
+        const ALDA_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzBlYTVlOSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BPC90ZXh0Pjwvc3ZnPg==';
+        const BILKIS_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzEwYjk4MSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CPC90ZXh0Pjwvc3ZnPg==';
+        const JUARIAH_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2Y1OWUwYiIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5KPC90ZXh0Pjwvc3ZnPg==';
+        const KAILA_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2VjNDg5OSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LPC90ZXh0Pjwvc3ZnPg==';
+        const KARTINI_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2VmNDQ0NCIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5UPC90ZXh0Pjwvc3ZnPg=='; 
+        const SITI_PHOTO_BASE64 = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzYzNjZmMSIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjUwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TPC90ZXh0Pjwvc3ZnPg==';
 
 
         // --- FIREBASE SIMULATION (menggunakan localStorage) ---
@@ -138,17 +135,14 @@
                     data.staff = data.staff || [];
                     data.orders = data.orders || [];
 
-                    // PENTING: Jika data produk kosong
+                    // PENTING: Jika data produk kosong atau data staff kosong (misalnya karena reset)
                     if (data.products.length === 0) {
                         initializeNewProducts();
                     }
+                    // ** SELALU INITIALIZE STAFF AGAR SEMUA JABATAN MENJADI "Anggota" **
+                    initializeNewStaff();
                     
-                    // Jika data staff kosong, inisialisasi ulang
-                    if (data.staff.length === 0) {
-                        initializeNewStaff();
-                    }
-                    
-                    // Jika ada inisialisasi yang terjadi, simpan
+                    // Simpan data jika ada inisialisasi yang terjadi
                     if (data.products.length === 0 || data.staff.length > 0) {
                          saveData();
                     }
@@ -179,16 +173,16 @@
         }
 
 
-        // Fungsi inisialisasi staf baru (Menggunakan PATH LOKAL)
+        // Fungsi inisialisasi staf baru
         function initializeNewStaff() {
-            // PENTING: Menggunakan path relatif di folder 'images/'
+            // ** SEMUA POSISI DIUBAH MENJADI "Anggota" SESUAI PERMINTAAN **
             const newStaffList = [
-                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: alda.jpg },
-                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: bil.jpg },
-                { id: 103, name: "Juariah", position: "Anggota", photo: juu.jpg },
-                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: kai.jpg },
-                { id: 105, name: "Kartini", position: "Anggota", photo: kar.jpg },
-                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: mai.jpg },
+                { id: 101, name: "Alda Fauzia Setiani", position: "Anggota", photo: ALDA_PHOTO_BASE64 },
+                { id: 102, name: "Bilkis Kumairoh", position: "Anggota", photo: BILKIS_PHOTO_BASE64 },
+                { id: 103, name: "Juariah", position: "Anggota", photo: JUARIAH_PHOTO_BASE64 },
+                { id: 104, name: "Kaila Okta Syahrini", position: "Anggota", photo: KAILA_PHOTO_BASE64 },
+                { id: 105, name: "Kartini", position: "Anggota", photo: KARTINI_PHOTO_BASE64 },
+                { id: 106, name: "Siti Maesaroh", position: "Anggota", photo: SITI_PHOTO_BASE64 },
             ];
             data.staff = newStaffList;
         }
@@ -212,7 +206,7 @@
             const product = data.products.find(p => p.id === productId);
             if (!product) return console.error("Produk tidak ditemukan.");
 
-            const phoneNumber = "6285779160680"; // GANTI DENGAN NOMOR WHATSAPP ANDA
+            const phoneNumber = "6281234567890"; // GANTI DENGAN NOMOR WHATSAPP ANDA
             const message = encodeURIComponent(product.whatsappText + "\n\n(Mohon sertakan nama dan alamat lengkap Anda untuk pengiriman voucher/instalasi).");
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
@@ -344,13 +338,12 @@
                 </section>
                 <!-- END POSTER SECTION -->
                 
-                <!-- PORTRAIT IMAGE SECTION (Menggunakan MASKOT_IMAGE_URL) -->
+                <!-- PORTRAIT IMAGE SECTION (Menggunakan Base64 SVG Internal) -->
                 <section class="mb-8 p-4 text-center">
                     <img 
-                        src="${MASKOT_IMAGE_URL}" 
+                        src="${PORTRAIT_MASKOT_BASE64}" 
                         alt="Maskot Layanan Wifi" 
                         class="w-48 h-72 object-cover mx-auto rounded-xl shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300"
-                        onerror="this.onerror=null; this.src='https://placehold.co/192x288/0ea5e9/ffffff?text=POSTER'"
                     />
                     <p class="mt-4 text-gray-500 text-sm font-medium">Koneksi stabil, harga bersahabat. Segera hubungi pengurus!</p>
                 </section>
@@ -423,13 +416,8 @@
         function renderStaff() {
             let staffHtml = data.staff.map(s => `
                 <div class="bg-white p-5 rounded-xl shadow-lg text-center flex flex-col items-center">
-                    <!-- Menggunakan path/URL dari data staf -->
-                    <img 
-                        src="${s.photo}" 
-                        alt="${s.name}" 
-                        class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md"
-                        onerror="this.onerror=null; this.src='${DEFAULT_STAFF_PHOTO_URL}';"
-                    >
+                    <!-- MENGGUNAKAN BASE64 DARI DATA INTERNAL (SIMULASI FOTO LOKAL) -->
+                    <img src="${s.photo}" alt="${s.name}" class="w-24 h-24 object-cover rounded-full mb-3 border-4 border-sky-200 shadow-md">
                     <h4 class="text-lg font-bold text-gray-800">${s.name}</h4>
                     <!-- Warna diubah menjadi sky-600 -->
                     <p class="text-sky-600 font-semibold">${s.position}</p>
@@ -451,7 +439,7 @@
                 <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl mt-10">
                     <!-- Warna diubah menjadi sky-600 -->
                     <h2 class="text-3xl font-bold mb-6 text-center text-sky-600">CMS Login</h2>
-                   
+                    <p class="text-center text-sm text-gray-500 mb-6">Password Demo: <code>admin123</code></p>
                     <input type="password" id="cms-password" class="cms-input" placeholder="Masukkan Password CMS">
                     <!-- Warna tombol diubah menjadi sky-500 (menggunakan cms-btn) -->
                     <button onclick="loginCMS()" class="cms-btn w-full">Masuk ke Dashboard</button>
@@ -623,10 +611,12 @@
         }
 
         function deleteProduct(id) {
-            data.products = data.products.filter(p => p.id !== id);
-            saveData();
-            renderCMSProducts();
-            showMessage("Terhapus", "Voucher berhasil dihapus.");
+            if (confirm("Apakah Anda yakin ingin menghapus voucher ini?")) {
+                data.products = data.products.filter(p => p.id !== id);
+                saveData();
+                renderCMSProducts();
+                showMessage("Terhapus", "Voucher berhasil dihapus.");
+            }
         }
 
         // CMS: STAFF MANAGER
@@ -637,15 +627,8 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="p-3 font-semibold">${s.name}</td>
                     <td class="p-3">${s.position}</td>
-                    <!-- Gambar menggunakan s.photo (bisa path relatif atau URL) -->
-                    <td class="p-3">
-                        <img 
-                            src="${s.photo}" 
-                            class="w-8 h-8 rounded-full inline-block" 
-                            alt="Foto"
-                            onerror="this.onerror=null; this.src='${DEFAULT_STAFF_PHOTO_URL}';"
-                        >
-                    </td>
+                    <!-- Gambar Base64 disajikan sebagai thumbnail kecil -->
+                    <td class="p-3"><img src="${s.photo}" class="w-8 h-8 rounded-full inline-block" alt="Foto"></td>
                     <td class="p-3 space-x-2 whitespace-nowrap">
                         <button onclick="editStaff(${s.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-edit"></i></button>
                         <button onclick="deleteStaff(${s.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
@@ -655,7 +638,6 @@
 
             cmsContent.innerHTML = `
                 <h3 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Manajemen Pengurus</h3>
-                <p class="text-sm text-gray-500 mb-4">Anda dapat menggunakan path relatif (contoh: <code>images/foto.jpg</code>) untuk gambar.</p>
                 <!-- Warna tombol diubah menjadi sky-500 -->
                 <button onclick="showStaffForm()" class="cms-btn mb-4 bg-sky-500 hover:bg-sky-600"><i class="fas fa-plus mr-2"></i> Tambah Pengurus</button>
 
@@ -691,8 +673,8 @@
                     <form id="staff-form" onsubmit="saveStaff(event, ${staff.id || null})">
                         <input type="text" id="s-name" class="cms-input" placeholder="Nama Lengkap" value="${staff.name || ''}" required>
                         <input type="text" id="s-position" class="cms-input" placeholder="Posisi Kepengurusan" value="${staff.position || 'Anggota'}" required>
-                        <!-- Input ini menggunakan DEFAULT_STAFF_PHOTO_URL sebagai fallback/nilai default -->
-                        <input type="text" id="s-photo" class="cms-input" placeholder="Path Gambar (cth: images/foto.jpg)" value="${staff.photo || DEFAULT_STAFF_PHOTO_URL}" required>
+                        <!-- PENTING: Untuk CMS demo, kita izinkan input URL. Jika ingin BASE64, input harus diisi dengan data URI yang valid. Default diisi Base64 Placeholder untuk memudahkan pengeditan -->
+                        <input type="text" id="s-photo" class="cms-input" placeholder="Data URI Foto (Base64 atau URL)" value="${staff.photo || 'https://placehold.co/150x150/0ea5e9/ffffff?text=FOTO'}" required>
 
                         <div class="flex space-x-2">
                             <!-- Warna tombol Simpan/Update tetap hijau untuk Success/Save -->
@@ -713,6 +695,13 @@
                 photo: form.querySelector('#s-photo').value,
             };
             
+            // Validasi sederhana jika pengguna mencoba memasukkan URL eksternal yang tidak valid
+            if (!newStaff.photo.startsWith('data:image/') && !newStaff.photo.startsWith('http')) {
+                 showMessage("Gagal Menyimpan", "Format foto tidak valid. Gunakan Base64 Data URI atau URL lengkap.");
+                 return;
+            }
+
+
             if (id) {
                 // Edit
                 const index = data.staff.findIndex(s => s.id === id);
@@ -731,15 +720,17 @@
         }
 
         function editStaff(id) {
-            const staff = data.staff.find(s => p.id === id);
+            const staff = data.staff.find(s => s.id === id);
             if (staff) showStaffForm(staff);
         }
 
         function deleteStaff(id) {
-            data.staff = data.staff.filter(s => s.id !== id);
-            saveData();
-            renderCMSStaff();
-            showMessage("Terhapus", "Pengurus berhasil dihapus.");
+            if (confirm("Apakah Anda yakin ingin menghapus pengurus ini?")) {
+                data.staff = data.staff.filter(s => p.id !== id);
+                saveData();
+                renderCMSStaff();
+                showMessage("Terhapus", "Pengurus berhasil dihapus.");
+            }
         }
 
         // CMS: ORDERS MANAGER (Simulasi Log Pemesanan)
